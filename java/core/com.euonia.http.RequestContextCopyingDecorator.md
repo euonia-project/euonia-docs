@@ -1,10 +1,12 @@
 # RequestContextCopyingDecorator
 
-> Decorates a Runnable with request context copying logic, ensuring that the original request context is available during task execution and properly restored afterwards.
+> 请求上下文复制装饰器，将当前线程的请求上下文复制到新线程中执行。
+> 在异步任务切换线程时，确保 `RequestContext` 能跨线程传递。
 
 - **Module**: `core`
 - **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 

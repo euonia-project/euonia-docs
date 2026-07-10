@@ -1,12 +1,14 @@
 # ResponseHttpStatusCode
 
-> Annotation that associates an HTTP status code with an exception or response type.
+> 标注类对应的 HTTP 响应状态码。
+> 用于在异常类上声明其对应的 HTTP 状态码（如 400、404 等），以便框架自动映射。
 
 - **Module**: `core`
 - **Type**: `annotation`
 - **Package**: `com.euonia.http`
 - **Retention**: `RetentionPolicy.RUNTIME`
 - **Target**: `TYPE`
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Annotations
 

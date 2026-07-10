@@ -1,6 +1,6 @@
 # DelegateRequestContextAccessor
 
-> A functional interface that provides access to the current RequestContext.
+> （未提供注释）
 
 - **Module**: `core`
 - **Type**: `@FunctionalInterface`

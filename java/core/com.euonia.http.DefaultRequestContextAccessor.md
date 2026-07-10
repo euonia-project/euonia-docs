@@ -1,11 +1,13 @@
 # DefaultRequestContextAccessor
 
-> 默认的请求上下文访问器实现。使用 ThreadLocal 存储请求上下文，确保线程安全。
+> `RequestContextAccessor` 的默认实现，基于 `ThreadLocal` 存储请求上下文。
+> 采用单例模式，每个线程拥有独立的上下文副本。
 
 - **Module**: `core`
 - **Type**: `final class`
 - **Package**: `com.euonia.http`
 - **Implements**: [`RequestContextAccessor`](./com.euonia.http.RequestContextAccessor.md)
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 

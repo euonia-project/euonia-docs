@@ -1,10 +1,15 @@
 # RequestContextAwareExecutor
 
-> Provides executors that are aware of the request context, automatically propagating the current context to worker threads.
+> 请求上下文感知的执行器工厂，提供能在异步线程中自动传递 `RequestContext` 的 `Executor`。
+>
+> 提供两种工厂方法：
+> - `fromCommonPool()` —— 基于 `ForkJoinPool.commonPool()` 的执行器
+> - `fromExecutor()` —— 基于固定大小线程池的执行器
 
 - **Module**: `core`
 - **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 
