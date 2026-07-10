@@ -79,6 +79,55 @@
   - `numbers` (`Collection<Long>`): 要编码的长整数集合
 - **Returns**: `String` - 表示输入长整数的短唯一字符串 ID
 
+### decode
+
+> 将短唯一字符串 ID 解码回原始整数。
+
+- **Parameters**:
+  - `hash` (`String`): 要解码的短唯一字符串 ID
+- **Returns**: `int[]` - 表示原始值的整数数组
+
+### decodeLong
+
+> 将短唯一字符串 ID 解码回原始长整数。
+
+- **Parameters**:
+  - `hash` (`String`): 要解码的短唯一字符串 ID
+- **Returns**: `long[]` - 表示原始值的长整数数组
+
+### encodeHex
+
+> 将十六进制字符串编码为短唯一字符串 ID。输入的十六进制字符串被分割为每 12 个字符一块，每块前缀添加 '1' 以确保其可以被解析为有效的长整数。
+
+- **Parameters**:
+  - `hex` (`String`): 要编码的十六进制字符串
+- **Returns**: `String` - 表示输入十六进制字符串的短唯一字符串 ID，如果输入无效则返回空字符串
+
+### decodeHex
+
+> 将短唯一字符串 ID 解码回原始十六进制字符串。
+
+- **Parameters**:
+  - `hash` (`String`): 要解码的短唯一字符串 ID
+- **Returns**: `String` - 输入 ID 所表示的原始十六进制字符串，如果输入无效则返回空字符串
+
+## Usage
+
+```java
+ShortUniqueId suid = ShortUniqueId.getDefault();
+
+// 编码
+String id = suid.encode(12345);
+String ids = suid.encode(1, 2, 3);
+
+// 解码
+int[] numbers = suid.decode(id);
+
+// 十六进制
+String hex = suid.encodeHex("ABCDEF123456");
+String original = suid.decodeHex(hex);
+```
+
 ## Usage
 
 ```java

@@ -35,6 +35,7 @@
 - **Returns**: `T` - 第一个匹配的值，如果未找到则返回默认值
 - **Type Parameters**:
   - `T`: 优先级队列中值的类型
+- **Throws**: `IllegalArgumentException` - 如果 queueConsumer 为 null
 
 ## Usage
 

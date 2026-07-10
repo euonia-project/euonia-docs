@@ -77,11 +77,51 @@
 
 ### newRandomId
 
-> 生成新的随机字符串 ID。
+> 基于指定种子生成新的随机字符串 ID。
 
 - **Parameters**:
   - `seed` (`long`): 种子值
 - **Returns**: `String` - 新的随机字符串 ID
+
+### newRandomId
+
+> 使用当前时间作为种子，生成新的随机字符串 ID。
+
+- **Returns**: `String` - 新的随机字符串 ID
+
+### newSnowflakeId
+
+> 生成新的 Snowflake ID。
+
+- **Returns**: `long` - 新的 Snowflake ID
+
+### newGuid
+
+> 使用默认生成策略（DEFAULT）生成新的 GUID。
+
+- **Returns**: `UUID` - 新的 GUID
+
+### newGuid
+
+> 根据指定的类型生成新的 GUID。
+
+- **Parameters**:
+  - `type` (`GuidType`): GUID 生成策略
+- **Returns**: `UUID` - 新的 GUID
+
+### newUlid
+
+> 生成新的 ULID 字符串。
+
+- **Returns**: `String` - 新的 ULID 字符串
+
+### getValue
+
+> 将 ObjectId 的值按指定类型返回。如果值不是该类型的实例则返回 null。
+
+- **Parameters**:
+  - `type` (`Class<T>`): 目标类型
+- **Returns**: `T` - 转换后的值，如果类型不匹配则返回 null
 
 ## Usage
 
@@ -93,8 +133,17 @@ ObjectId id3 = ObjectId.guid(GuidType.SEQUENTIAL_AS_STRING);
 ObjectId id4 = ObjectId.random();
 ObjectId id5 = ObjectId.ulid();
 
-// 生成随机字符串 ID
-String randomId = ObjectId.newRandomId(System.currentTimeMillis());
+// 便捷静态方法（不创建 ObjectId 包装）
+long snowflakeId = ObjectId.newSnowflakeId();
+UUID guid = ObjectId.newGuid();
+UUID seqGuid = ObjectId.newGuid(GuidType.SEQUENTIAL_AS_STRING);
+String ulid = ObjectId.newUlid();
+String randomId = ObjectId.newRandomId();
+String seededId = ObjectId.newRandomId(System.currentTimeMillis());
+
+// 类型安全的取值
+ObjectId objId = ObjectId.snowflake();
+Long longVal = objId.getValue(Long.class);
 ```
 
 - **Parameters**:

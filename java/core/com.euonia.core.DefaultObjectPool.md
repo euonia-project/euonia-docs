@@ -14,6 +14,12 @@
 - **Implements**: [`ObjectPool`](./com.euonia.core.ObjectPool.md)&lt;T&gt;
 - **Author**: damon(zhaorong@outlook.com)
 
+## Annotations
+
+### `@Override`
+
+> 表示 `getCapacity`、`getPolicy`、`acquire`、`release` 方法重写了 `ObjectPool` 接口中定义的方法。
+
 ## Type Parameters
 
 | Parameter | Bound | Description |
@@ -73,3 +79,4 @@
 > 从池中获取一个对象。正常路径（inUseCount < capacity）：如果空闲池中有可用对象，对其进行验证并返回；如果空闲池为空，通过策略创建新对象。超限路径（inUseCount >= capacity）：根据 oversizeBehavior 处理 —— THROW_EXCEPTION 抛出异常，RETURN_NULL 返回 null，CREATE_NEW 在容量之外创建新实例，WAIT_FOR_AVAILABLE 阻塞直到有对象被释放。
 
 - **Returns**: `T` - 获取到的对象，如果超限行为为 RETURN_NULL 则返回 null
+- **Throws**: `RuntimeException` - 如果超限行为为 THROW_EXCEPTION，或线程在 WAIT_FOR_AVAILABLE 等待期间被中断

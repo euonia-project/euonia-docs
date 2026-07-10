@@ -30,18 +30,18 @@
 
 ### getInstance
 
-> 获取 SnowflakeId 的默认实例，使用 workerId 和 datacenterId 都为 0。
-
-- **Returns**: `SnowflakeId` - 默认的 SnowflakeId 实例
-
-### getInstance
-
-> 使用指定的 workerId 和 datacenterId 获取实例。
+> 使用指定的 workerId 和 datacenterId 获取实例。（未提供注释）
 
 - **Parameters**:
   - `workerId` (`long`): 工作节点 ID
   - `datacenterId` (`long`): 数据中心 ID
 - **Returns**: `SnowflakeId` - 新实例
+
+### getInstance
+
+> 获取 SnowflakeId 的默认实例，使用 workerId 和 datacenterId 都为 0。
+
+- **Returns**: `SnowflakeId` - 默认的 SnowflakeId 实例
 
 ### nextId
 
@@ -52,6 +52,12 @@
 ## Usage
 
 ```java
+// 默认实例（workerId=0, datacenterId=0）
 SnowflakeId idGen = SnowflakeId.getInstance();
+
+// 自定义 workerId 和 datacenterId
+SnowflakeId idGen2 = SnowflakeId.getInstance(1, 1);
+
+// 生成 ID
 long id = idGen.nextId();
 ```
