@@ -1,73 +1,74 @@
 # Assert
 
-> Utility class providing assertion methods for validating method arguments and state.
+> 参数断言工具类，提供常用的前置条件检查方法。当条件不满足时，抛出 `IllegalArgumentException`。
 
 - **Type**: class
 - **Package**: `com.euonia.utility`
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 
 ### notNull
 
-> Asserts that an object is not null.
+> 断言对象不为 null。
 
 - **Parameters**:
-  - `obj` (`Object`): The object to check
-  - `message` (`String`): The exception message if null
-- **Throws**: `IllegalArgumentException` - If the object is null
+  - `obj` (`Object`): 要检查的对象
+  - `message` (`String`): 断言失败时的错误消息
+- **Throws**: `IllegalArgumentException` - 如果对象为 null
 
 ### notNull
 
-> Asserts that an object is not null, using a Supplier for the message.
+> 断言对象不为 null，使用 Supplier 延迟生成错误消息。
 
 - **Parameters**:
-  - `obj` (`Object`): The object to check
-  - `messageSupplier` (`Supplier<String>`): Supplier for the exception message if null
-- **Throws**: `IllegalArgumentException` - If the object is null
+  - `obj` (`Object`): 要检查的对象
+  - `messageSupplier` (`Supplier<String>`): 断言失败时的错误消息提供者
+- **Throws**: `IllegalArgumentException` - 如果对象为 null
 
 ### notEmpty
 
-> Asserts that a string is not null, empty, or blank.
+> 断言字符串不为空或空白。
 
 - **Parameters**:
-  - `str` (`String`): The string to check
-  - `message` (`String`): The exception message if empty
-- **Throws**: `IllegalArgumentException` - If the string is null, empty, or blank
+  - `str` (`String`): 要检查的字符串
+  - `message` (`String`): 断言失败时的错误消息
+- **Throws**: `IllegalArgumentException` - 如果字符串为 null、空或空白
 
 ### notEmpty
 
-> Asserts that a list is not null or empty.
+> 断言列表不为空。
 
 - **Parameters**:
-  - `list` (`List<?>`): The list to check
-  - `message` (`String`): The exception message if empty
-- **Throws**: `IllegalArgumentException` - If the list is null or empty
+  - `list` (`List<?>`): 要检查的列表
+  - `message` (`String`): 断言失败时的错误消息
+- **Throws**: `IllegalArgumentException` - 如果列表为 null 或空
 
 ### notEmpty
 
-> Asserts that an array is not null or empty.
+> 断言数组不为空。
 
 - **Parameters**:
-  - `array` (`Object[]`): The array to check
-  - `message` (`String`): The exception message if empty
-- **Throws**: `IllegalArgumentException` - If the array is null or empty
+  - `array` (`Object[]`): 要检查的数组
+  - `message` (`String`): 断言失败时的错误消息
+- **Throws**: `IllegalArgumentException` - 如果数组为 null 或空
 
 ### notContains
 
-> Asserts that a list does not contain any element matching the predicate.
+> 断言列表中不包含与给定断言匹配的任何元素。
 
 - **Parameters**:
-  - `list` (`List<T>`): The list to check
-  - `predicate` (`Predicate<T>`): The predicate to test elements
-  - `message` (`String`): The exception message if a match is found
-- **Throws**: `IllegalArgumentException` - If any element matches
+  - `list` (`List<T>`): 要检查的列表
+  - `predicate` (`Predicate<T>`): 匹配断言
+  - `message` (`String`): 断言失败时的错误消息
+- **Throws**: `IllegalArgumentException` - 如果列表包含匹配断言元素
 
 ### notContains
 
-> Asserts that an array does not contain any element matching the predicate.
+> 断言数组中不包含与给定断言匹配的任何元素。
 
 - **Parameters**:
-  - `array` (`T[]`): The array to check
-  - `predicate` (`Predicate<T>`): The predicate to test elements
-  - `message` (`String`): The exception message if a match is found
-- **Throws**: `IllegalArgumentException` - If any element matches
+  - `array` (`T[]`): 要检查的数组
+  - `predicate` (`Predicate<T>`): 匹配断言
+  - `message` (`String`): 断言失败时的错误消息
+- **Throws**: `IllegalArgumentException` - 如果数组包含匹配断言元素
