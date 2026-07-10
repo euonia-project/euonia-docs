@@ -2,7 +2,8 @@
 
 > Provides executors that are aware of the request context, automatically propagating the current context to worker threads.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
 
 ## Methods

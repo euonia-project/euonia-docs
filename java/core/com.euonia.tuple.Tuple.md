@@ -2,8 +2,10 @@
 
 > 表示一个有序的值集合，其中每个值可以是任意类型。元组是不可变的，可以包含重复值。提供了访问值、检查值是否存在以及执行常见元组操作的方法。`Tuple` 接口继承 `Iterable<Object>` 和 `Serializable`。
 
+- **Module**: `core`
 - **Type**: `interface`
 - **Package**: `com.euonia.tuple`
+- **Extends**: `Iterable<Object>`, `Serializable`
 - **Author**: damon(zhaorong@outlook.com)
 
 ## Methods

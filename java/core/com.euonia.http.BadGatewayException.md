@@ -2,8 +2,10 @@
 
 > The BadGatewayException is thrown when an HTTP request results in a 502 Bad Gateway status code. This exception indicates that the server, while acting as a gateway or proxy, received an invalid response from the upstream server.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
 
 ## Methods
 

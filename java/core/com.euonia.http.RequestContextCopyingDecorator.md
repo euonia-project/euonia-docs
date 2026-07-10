@@ -2,7 +2,8 @@
 
 > Decorates a Runnable with request context copying logic, ensuring that the original request context is available during task execution and properly restored afterwards.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
 
 ## Methods

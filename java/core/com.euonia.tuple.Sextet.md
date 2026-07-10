@@ -2,9 +2,22 @@
 
 > 表示包含六个值的元组，这些值可以是不同类型。此类是不可变的。
 
-- **Type**: record
+- **Module**: `core`
+- **Type**: `record`
 - **Package**: `com.euonia.tuple`
+- **Implements**: [`Tuple`](./com.euonia.tuple.Tuple.md)
 - **Author**: damon(zhaorong@outlook.com)
+
+## Type Parameters
+
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `V1` | *(无)* | 第一个值的类型 |
+| `V2` | *(无)* | 第二个值的类型 |
+| `V3` | *(无)* | 第三个值的类型 |
+| `V4` | *(无)* | 第四个值的类型 |
+| `V5` | *(无)* | 第五个值的类型 |
+| `V6` | *(无)* | 第六个值的类型 |
 
 ## Record Components
 

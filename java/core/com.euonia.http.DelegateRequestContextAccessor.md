@@ -2,7 +2,8 @@
 
 > A functional interface that provides access to the current RequestContext.
 
-- **Type**: interface
+- **Module**: `core`
+- **Type**: `@FunctionalInterface`
 - **Package**: `com.euonia.http`
 
 ## Methods

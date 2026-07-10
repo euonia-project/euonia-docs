@@ -2,9 +2,18 @@
 
 > 表示包含两个值的元组，这两个值可以是不同类型。此类是不可变的。
 
-- **Type**: record
+- **Module**: `core`
+- **Type**: `record`
 - **Package**: `com.euonia.tuple`
+- **Implements**: [`Tuple`](./com.euonia.tuple.Tuple.md)
 - **Author**: damon(zhaorong@outlook.com)
+
+## Type Parameters
+
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `V1` | *(无)* | 第一个值的类型 |
+| `V2` | *(无)* | 第二个值的类型 |
 
 ## Record Components
 

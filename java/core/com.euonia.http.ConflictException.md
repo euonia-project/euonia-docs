@@ -2,8 +2,10 @@
 
 > The ConflictException class represents an HTTP 409 Conflict error. It extends the HttpStatusException class.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
 
 ## Methods
 

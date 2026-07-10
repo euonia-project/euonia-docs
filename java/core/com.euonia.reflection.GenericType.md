@@ -2,8 +2,15 @@
 
 > An abstract class for capturing and retaining generic type information at runtime. Enables type-safe generic resolution by extracting the actual type argument from a subclass.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `abstract class`
 - **Package**: `com.euonia.reflection`
+
+## Type Parameters
+
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `T` | *(无)* | 泛型类型参数 |
 
 ## Methods
 

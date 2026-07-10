@@ -2,8 +2,10 @@
 
 > Exception thrown when authentication fails due to invalid credentials, expired tokens, or other authentication-related issues.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.security`
+- **Extends**: `RuntimeException`
 
 ## Methods
 

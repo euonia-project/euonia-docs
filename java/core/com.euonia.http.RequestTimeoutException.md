@@ -2,8 +2,10 @@
 
 > The RequestTimeoutException class represents an HTTP 408 Request Timeout error. It extends the HttpStatusException class.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
 
 ## Methods
 

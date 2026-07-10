@@ -2,7 +2,8 @@
 
 > StringUtility 是一个工具类，提供字符串操作的常用方法。旨在简化字符串处理并提高代码可读性。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.utility`
 - **Author**: damon(zhaorong@outlook.com)
 

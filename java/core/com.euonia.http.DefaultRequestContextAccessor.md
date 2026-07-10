@@ -2,15 +2,10 @@
 
 > 默认的请求上下文访问器实现。使用 ThreadLocal 存储请求上下文，确保线程安全。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.http`
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `HOLDER` | `ThreadLocal<RequestContext>` | 线程局部存储的请求上下文 |
-| `INSTANCE` | `DefaultRequestContextAccessor` | 单例实例 |
+- **Implements**: [`RequestContextAccessor`](./com.euonia.http.RequestContextAccessor.md)
 
 ## Methods
 

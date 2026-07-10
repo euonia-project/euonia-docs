@@ -2,23 +2,10 @@
 
 > 包含当前请求的相关信息。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.http`
 - **Author**: damon(zhaorong@outlook.com)
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `connectionId` | `String` | 表示连接的唯一标识符 |
-| `requestUri` | `String` | 请求的 URI |
-| `requestMethod` | `String` | 请求的方法（如 GET、POST 等） |
-| `remoteIpAddress` | `String` | 远程目标的 IP 地址 |
-| `remotePort` | `int` | 远程目标的端口 |
-| `webSocketRequest` | `boolean` | 指示该请求是否为 WebSocket 建立请求 |
-| `user` | `UserPrincipal` | 当前用户主体 |
-| `requestHeaders` | `Map<String, String>` | 请求头信息 |
-| `traceIdentifier` | `String` | 追踪标识符 |
 
 ## Methods
 

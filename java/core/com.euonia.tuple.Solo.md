@@ -2,9 +2,17 @@
 
 > 表示包含单个值的元组，该值可以是任意类型。此类是不可变的。
 
-- **Type**: record
+- **Module**: `core`
+- **Type**: `record`
 - **Package**: `com.euonia.tuple`
+- **Implements**: [`Tuple`](./com.euonia.tuple.Tuple.md)
 - **Author**: damon(zhaorong@outlook.com)
+
+## Type Parameters
+
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `V` | *(无)* | 元组值的类型 |
 
 ## Record Components
 

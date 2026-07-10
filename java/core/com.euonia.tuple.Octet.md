@@ -2,9 +2,17 @@
 
 > 表示包含八个值的元组，这些值可以是不同类型。此类是不可变的。
 
-- **Type**: record
+- **Module**: `core`
+- **Type**: `record`
 - **Package**: `com.euonia.tuple`
+- **Implements**: [`Tuple`](./com.euonia.tuple.Tuple.md)
 - **Author**: damon(zhaorong@outlook.com)
+
+## Type Parameters
+
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `V1` ~ `V8` | *(无)* | 元组各值的类型（共 8 个） |
 
 ## Record Components
 

@@ -3,7 +3,8 @@
 > User claim types as defined in OpenID Connect Core 1.0 specification.
 > See: https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.security`
 
 ## Fields

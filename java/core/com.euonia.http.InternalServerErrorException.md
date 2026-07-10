@@ -2,8 +2,10 @@
 
 > The InternalServerErrorException class represents an HTTP 500 Internal Server Error. It extends the HttpStatusException class.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
 
 ## Methods
 

@@ -2,14 +2,10 @@
 
 > The HttpStatusException is thrown when an HTTP request results in an error status code. It contains the HTTP status code and a message describing the error. This exception can be used to represent various HTTP errors, such as 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Server Error, etc.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `statusCode` | `int` | The HTTP status code |
+- **Extends**: `RuntimeException`
 
 ## Methods
 

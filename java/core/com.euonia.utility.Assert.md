@@ -2,7 +2,8 @@
 
 > 参数断言工具类，提供常用的前置条件检查方法。当条件不满足时，抛出 `IllegalArgumentException`。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.utility`
 - **Author**: damon(zhaorong@outlook.com)
 

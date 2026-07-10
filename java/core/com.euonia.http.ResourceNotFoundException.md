@@ -2,8 +2,10 @@
 
 > The ResourceNotFoundException class represents an HTTP 404 Not Found error. It extends the HttpStatusException class.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
 
 ## Methods
 

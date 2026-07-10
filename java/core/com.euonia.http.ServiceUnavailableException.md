@@ -2,8 +2,10 @@
 
 > The ServiceUnavailableException class represents an HTTP 503 Service Unavailable error. It extends the HttpStatusException class.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
 
 ## Methods
 

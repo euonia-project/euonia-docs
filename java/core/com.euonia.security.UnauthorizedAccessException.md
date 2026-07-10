@@ -2,8 +2,10 @@
 
 > The UnauthorizedAccessException is thrown when an attempt is made to access a resource or perform an action without proper authentication or authorization.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.security`
+- **Extends**: `RuntimeException`
 
 ## Methods
 

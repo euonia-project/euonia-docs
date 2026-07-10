@@ -2,7 +2,8 @@
 
 > ServiceProvider 是一个接口，定义了用于解析和创建服务实例的方法。此接口的实现可以提供自定义逻辑来检索和实例化服务。
 
-- **Type**: interface
+- **Module**: `core`
+- **Type**: `interface`
 - **Package**: `com.euonia.reflection`
 - **Author**: damon(zhaorong@outlook.com)
 

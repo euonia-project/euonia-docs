@@ -2,8 +2,10 @@
 
 > The UpgradeRequiredException class represents an HTTP 426 Upgrade Required error. It extends the HttpStatusException class.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.http`
+- **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
 
 ## Methods
 

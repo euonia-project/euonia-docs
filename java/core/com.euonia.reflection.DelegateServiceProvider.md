@@ -2,14 +2,10 @@
 
 > DelegateServiceProvider is an implementation of the ServiceProvider interface that delegates service resolution to a provided Function. It allows for flexible service resolution by using a custom Function to retrieve services based on their class type.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.reflection`
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `beanFactory` | `Function<Class<?>, ?>` | The function used to resolve services based on their class type |
+- **Implements**: [`ServiceProvider`](./com.euonia.reflection.ServiceProvider.md)
 
 ## Methods
 

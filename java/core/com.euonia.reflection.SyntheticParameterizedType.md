@@ -2,16 +2,11 @@
 
 > ParameterizedType 的可合成实现，允许在运行时手动构造参数化类型。当无法通过反射直接获取泛型类型信息时（如需要动态组合原始类型和类型参数），可使用该类创建合成的参数化类型实例。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.reflection`
+- **Implements**: `ParameterizedType`
 - **Author**: damon(zhaorong@outlook.com)
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `rawType` | `Type` | 原始类型，如 `List.class` |
-| `typeArguments` | `Type[]` | 类型参数数组，如 `[String.class]` |
 
 ## Methods
 

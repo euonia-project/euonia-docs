@@ -2,14 +2,10 @@
 
 > SimpleServiceProvider is a basic implementation of the ServiceProvider interface that uses a ConcurrentHashMap to store and retrieve service instances. It allows for registering services and creating new instances using reflection.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.reflection`
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `services` | `Map<Class<?>, Object>` | ConcurrentHashMap storing registered service instances |
+- **Implements**: [`ServiceProvider`](./com.euonia.reflection.ServiceProvider.md)
 
 ## Methods
 

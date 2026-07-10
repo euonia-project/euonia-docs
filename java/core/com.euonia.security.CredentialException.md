@@ -2,15 +2,10 @@
 
 > The CredentialException is thrown when there is an issue with user credentials, such as invalid username or password. This exception indicates that the provided credentials are incorrect or do not meet the required criteria.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `abstract class`
 - **Package**: `com.euonia.security`
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `credential` | `Object` | The credential that caused the exception |
-| `details` | `Map<String, Object>` | Additional details about the error |
+- **Extends**: `RuntimeException`
 
 ## Methods
 

@@ -2,9 +2,19 @@
 
 > 包含三个值的元组。此类是不可变的。
 
-- **Type**: record
+- **Module**: `core`
+- **Type**: `record`
 - **Package**: `com.euonia.tuple`
+- **Implements**: [`Tuple`](./com.euonia.tuple.Tuple.md)
 - **Author**: damon(zhaorong@outlook.com)
+
+## Type Parameters
+
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `T1` | *(无)* | 第一个值的类型 |
+| `T2` | *(无)* | 第二个值的类型 |
+| `T3` | *(无)* | 第三个值的类型 |
 
 ## Record Components
 

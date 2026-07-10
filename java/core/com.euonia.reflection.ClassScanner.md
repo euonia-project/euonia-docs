@@ -2,7 +2,8 @@
 
 > 扫描 classpath 中给定包下的类。支持基于目录的 classpath（典型于 IDE/开发环境）和基于 JAR 的 classpath（典型于打包部署环境）。仅使用标准 Java API —— 无第三方依赖。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.reflection`
 - **Author**: damon(zhaorong@outlook.com)
 

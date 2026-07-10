@@ -2,7 +2,8 @@
 
 > 定义请求上下文访问器的接口。
 
-- **Type**: interface
+- **Module**: `core`
+- **Type**: `interface`
 - **Package**: `com.euonia.http`
 - **Author**: damon(zhaorong@outlook.com)
 

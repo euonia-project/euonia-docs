@@ -2,15 +2,10 @@
 
 > Exception thrown for account-related errors during authentication or authorization processes, such as account not found, account locked, etc. This exception can be extended to provide more specific error types.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `abstract class`
 - **Package**: `com.euonia.security`
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `identity` | `Object` | The identity associated with the account error |
-| `details` | `Map<String, Object>` | Additional details about the error |
+- **Extends**: `RuntimeException`
 
 ## Methods
 

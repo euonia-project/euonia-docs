@@ -2,14 +2,9 @@
 
 > Represents a user principal, wrapping a javax.security.auth.Subject and providing access to the subject's principals and claims.
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.security`
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `subject` | `Subject` | The underlying javax.security.auth.Subject |
 
 ## Methods
 
