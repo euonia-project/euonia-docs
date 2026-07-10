@@ -69,7 +69,7 @@ HTTP 异常层次结构与请求上下文抽象。
 
 | 类 | 类型 | 说明 |
 |----|------|------|
-| [HttpStatusException](./com.euonia.http.HttpStatusException.md) | 抽象类 | HTTP 状态异常基类 |
+| [HttpStatusException](./com.euonia.http.HttpStatusException.md) | 类 | HTTP 状态异常基类 |
 | [BadRequestException](./com.euonia.http.BadRequestException.md) | 异常类 | 400 Bad Request |
 | [ForbiddenException](./com.euonia.http.ForbiddenException.md) | 异常类 | 403 Forbidden |
 | [ResourceNotFoundException](./com.euonia.http.ResourceNotFoundException.md) | 异常类 | 404 Not Found |
@@ -82,13 +82,13 @@ HTTP 异常层次结构与请求上下文抽象。
 | [BadGatewayException](./com.euonia.http.BadGatewayException.md) | 异常类 | 502 Bad Gateway |
 | [ServiceUnavailableException](./com.euonia.http.ServiceUnavailableException.md) | 异常类 | 503 Service Unavailable |
 | [GatewayTimeoutException](./com.euonia.http.GatewayTimeoutException.md) | 异常类 | 504 Gateway Timeout |
-| [RequestContext](./com.euonia.http.RequestContext.md) | 接口 | 请求上下文 |
+| [RequestContext](./com.euonia.http.RequestContext.md) | 类 | 请求上下文 |
 | [RequestContextAccessor](./com.euonia.http.RequestContextAccessor.md) | 接口 | 请求上下文访问器 |
 | [DefaultRequestContextAccessor](./com.euonia.http.DefaultRequestContextAccessor.md) | 类 | 默认请求上下文访问器 |
-| [DelegateRequestContextAccessor](./com.euonia.http.DelegateRequestContextAccessor.md) | 类 | 委托式请求上下文访问器 |
+| [DelegateRequestContextAccessor](./com.euonia.http.DelegateRequestContextAccessor.md) | 函数式接口 | 委托式请求上下文访问器 |
 | [RequestContextAwareExecutor](./com.euonia.http.RequestContextAwareExecutor.md) | 类 | 请求上下文感知执行器 |
 | [RequestContextCopyingDecorator](./com.euonia.http.RequestContextCopyingDecorator.md) | 类 | 请求上下文复制装饰器 |
-| [ResponseHttpStatusCode](./com.euonia.http.ResponseHttpStatusCode.md) | 接口 | HTTP 状态码接口 |
+| [ResponseHttpStatusCode](./com.euonia.http.ResponseHttpStatusCode.md) | 注解 | HTTP 状态码注解 |
 
 ### com.euonia.reflection
 
@@ -98,8 +98,7 @@ HTTP 异常层次结构与请求上下文抽象。
 |----|------|------|
 | [ClassScanner](./com.euonia.reflection.ClassScanner.md) | 类 | 类路径扫描器 |
 | [ServiceProvider](./com.euonia.reflection.ServiceProvider.md) | 接口 | 服务提供者接口 |
-| [SimpleServiceProvider](./com.euonia.reflection.SimpleServiceProvider.md) | 类 | 简单服务提供者实现 |
-| [DelegateServiceProvider](./com.euonia.reflection.DelegateServiceProvider.md) | 类 | 委托式服务提供者 |
+| [Generic](./com.euonia.reflection.Generic.md) | 抽象类 | 泛型类型解析 |
 | [GenericType](./com.euonia.reflection.GenericType.md) | 抽象类 | 泛型类型捕获 |
 | [SyntheticParameterizedType](./com.euonia.reflection.SyntheticParameterizedType.md) | 类 | 合成参数化类型 |
 | [TypeHelper](./com.euonia.reflection.TypeHelper.md) | 工具类 | 类型转换助手 |
@@ -116,7 +115,7 @@ HTTP 异常层次结构与请求上下文抽象。
 | [CredentialException](./com.euonia.security.CredentialException.md) | 异常类 | 凭证异常 |
 | [UnauthorizedAccessException](./com.euonia.security.UnauthorizedAccessException.md) | 异常类 | 未授权访问异常 |
 | [UserClaimTypes](./com.euonia.security.UserClaimTypes.md) | 常量类 | 用户声明类型常量 |
-| [UserPrincipal](./com.euonia.security.UserPrincipal.md) | 接口 | 用户主体接口 |
+| [UserPrincipal](./com.euonia.security.UserPrincipal.md) | 类 | 用户主体 |
 
 ### com.euonia.tuple
 
@@ -124,7 +123,7 @@ HTTP 异常层次结构与请求上下文抽象。
 
 | 类 | 元素数 | 说明 |
 |----|--------|------|
-| [Tuple](./com.euonia.tuple.Tuple.md) | 基类 | 元组基类 |
+| [Tuple](./com.euonia.tuple.Tuple.md) | 接口 | 元组基类接口 |
 | [Solo](./com.euonia.tuple.Solo.md) | 1 | 单元素元组 |
 | [Duet](./com.euonia.tuple.Duet.md) | 2 | 双元素元组 |
 | [Trio](./com.euonia.tuple.Trio.md) | 3 | 三元素元组 |
