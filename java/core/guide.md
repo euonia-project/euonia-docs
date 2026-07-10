@@ -1,0 +1,621 @@
+# Core 模块 — 开发者手册
+
+> Euonia 框架的核心基础设施模块，提供 **ID 生成**、**对象池**、**元组数据结构**、**注解式校验**、**HTTP 异常层次**、**请求上下文**、**安全主体**、**反射工具**、**类型转换**、**DI 抽象** 等基础能力。
+
+- **Maven 坐标**: `com.euonia:core`
+- **API文档**：[点击查看](./apis)
+
+---
+
+## 包结构
+
+```text
+com.euonia
+├── core/           # ID生成、对象池、单例容器、优先队列
+├── tuple/          # 不可变元组（1..10 元组，基于 Record）
+├── annotation/     # 注解驱动的校验系统
+├── security/       # 安全异常、声明类型、用户主体
+├── http/           # 请求上下文、HTTP 状态异常体系
+├── utility/        # 字符串工具、对象反射、断言
+└── reflection/     # DI 抽象、类扫描、类型转换、泛型捕获
+```
+
+---
+
+## 模块架构
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                     euonia-core                             │
+├─────────────────────────────────────────────────────────────┤
+│  com.euonia.core          com.euonia.tuple                 │
+│  ┌──────────────┐        ┌──────────────────────┐          │
+│  │ ObjectId     │        │ Tuple (接口)          │          │
+│  │ SnowflakeId  │        │ Solo ... Decet        │          │
+│  │ GuidGenerator│        │ (Record ×10)          │          │
+│  │ ULID         │        └──────────────────────┘          │
+│  │ ShortUniqueId│                                           │
+│  │ RandomId     │        com.euonia.annotation             │
+│  │ Singleton    │        ┌──────────────────────┐          │
+│  │ PriorityQueue│        │ @Validation          │          │
+│  │ Pair         │        │ Validator<A>         │          │
+│  │ ObjectPool   │        │ @Required            │          │
+│  └──────────────┘        │ @StringLength        │          │
+│                           │ @Range               │          │
+│                           │ @RegularExpression   │          │
+│                           └──────────────────────┘          │
+│  com.euonia.security                                       │
+│  ┌───────────────────────────┐                             │
+│  │ UserPrincipal             │                             │
+│  │ UserClaimTypes            │                             │
+│  │ AccountException (抽象)    │                             │
+│  │ CredentialException (抽象) │                             │
+│  │ AuthenticationException   │                             │
+│  │ UnauthorizedAccessException│                            │
+│  └───────────────────────────┘                             │
+│                                                            │
+│  com.euonia.http              com.euonia.reflection        │
+│  ┌──────────────────────┐    ┌──────────────────────┐     │
+│  │ HttpStatusException  │    │ ServiceProvider      │     │
+│  │ (400..504 子类 ×12)  │    │ SimpleServiceProvider│     │
+│  │ RequestContext       │    │ DelegateServiceProvider│   │
+│  │ RequestContextAccessor│   │ ClassScanner         │     │
+│  │ RequestContextAware  │    │ TypeHelper           │     │
+│  │   Executor           │    │ GenericType<T>       │     │
+│  │ RequestContextCopying│    │ @DisplayName         │     │
+│  │   Decorator          │    └──────────────────────┘     │
+│  │ @ResponseHttpStatusCode│                                │
+│  └──────────────────────┘                                  │
+│                                                            │
+│  com.euonia.utility                                        │
+│  ┌──────────────────┐                                      │
+│  │ StringUtility    │                                      │
+│  │ ObjectUtility    │                                      │
+│  │ Assert           │                                      │
+│  └──────────────────┘                                      │
+└─────────────────────────────────────────────────────────────┘
+```
+
+`core` 是所有其他 Euonia 模块的基石，被 `osba`、`pipeline`、`ddd`、`bus-*`、`uow`、`spring`、`sample` 等模块依赖。
+
+---
+
+## 一、ID 生成
+
+### 统一 ID 门面：ObjectId（不可变）
+
+`ObjectId` 包装 `long | String | UUID | Integer`，提供统一构造 + 静态工厂模式：
+
+```java
+// 五种生成策略
+ObjectId id1 = ObjectId.snowflake();       // Snowflake 64-bit
+ObjectId id2 = ObjectId.guid();            // UUID (默认)
+ObjectId id3 = ObjectId.guid(GuidType.SEQUENTIAL_AS_STRING); // .NET 兼容顺序 GUID
+ObjectId id4 = ObjectId.random();          // 随机字符串
+ObjectId id5 = ObjectId.ulid();            // ULID 排序友好
+
+// 获取原始值
+long l = id1.getValue(Long.class);         // 类型安全取值
+UUID u = id3.getValue(UUID.class);
+```
+
+| 方法 | 说明 |
+|------|------|
+| `ObjectId.snowflake()` | Snowflake 64-bit → `ObjectId(long)` |
+| `ObjectId.guid()` / `ObjectId.guid(GuidType)` | UUID → `ObjectId(UUID)` |
+| `ObjectId.random()` | 随机字符串 → `ObjectId(String)` |
+| `ObjectId.ulid()` | ULID 字符串 → `ObjectId(String)` |
+| `ObjectId(long\|String\|UUID\|Integer)` | 直接构造 |
+| `getValue(Class<T>)` | 类型安全取值；`Long`↔`Integer` 自动拆箱 |
+
+### SnowflakeId — 分布式 64-bit ID
+
+Twitter Snowflake 变体，自定义纪元 **2021-01-01**，无需节点间协调：
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│ 1-bit │ 41-bit Timestamp │ 5-bit DC │ 5-bit Worker │ 12-bit Seq │
+└──────────────────────────────────────────────────────────┘
+```
+
+| 参数 | 位数 | 最大值 |
+|------|------|--------|
+| 时间戳（距纪元 ms） | 41 | ~69 年 |
+| 数据中心 ID | 5 | 32 |
+| 工作节点 ID | 5 | 32 |
+| 序列号 | 12 | 4096/ms |
+
+```java
+SnowflakeId id = SnowflakeId.getInstance(1, 1);  // workerId, datacenterId
+long uniqueId = id.nextId();  // synchronized 线程安全
+```
+
+**特性：**
+- 时钟回拨检测（抛出异常）
+- 同毫秒序列号溢出→等待下一毫秒
+- 默认 `getInstance()` = worker 0 / datacenter 0
+
+### GuidGenerator & GuidType
+
+兼容 .NET 的顺序 GUID 布局的 UUID 生成器，使用 .NET 纪元偏移量 `62_135_596_800_000L`：
+
+| GuidType | 说明 |
+|----------|------|
+| `DEFAULT` | 标准 UUID |
+| `SEQUENTIAL_AS_STRING` | 字符串排序友好的顺序 GUID |
+| `SEQUENTIAL_AS_BINARY` | 二进制排序友好的顺序 GUID |
+| `SEQUENTIAL_AT_END` | 尾部顺序 GUID |
+| `EMPTY` | 全零 UUID |
+
+### ULID — 字典序可排序 ID
+
+Crockford Base32 编码、时间戳前缀、毫秒级单调递增：
+
+```java
+String ulid = ULID.generate();  // 如 "01ARZ3NDEKTSV4RRFFQ69G5FAV"
+```
+
+### ShortUniqueId — 短 ID（Hashids 风格）
+
+将整数编码为短字符串，支持自定义盐值、字母表、分隔符：
+
+```java
+ShortUniqueId suid = ShortUniqueId.getDefault();
+String hash = suid.encode(12345);       // "j0gW"
+int[] decoded = suid.decode(hash);      // [12345]
+String hexHash = suid.encodeHex("A1B2C3D4E5F6");
+```
+
+---
+
+## 二、对象池
+
+基于策略模式的通用对象池，支持容量控制、对象验证与销毁：
+
+### 核心接口
+
+```java
+// 池接口
+public interface ObjectPool<T> {
+    int getCapacity();
+    int getIdleCount();
+    int getInUseCount();
+    ObjectPoolPolicy<T> getPolicy();
+    T acquire();
+    void release(T obj);
+}
+
+// 池策略（生命周期定义）
+public interface ObjectPoolPolicy<T> {
+    T create();
+    boolean validate(T obj);
+    void destroy(T obj);
+    OversizeBehavior oversizeBehavior();
+}
+```
+
+### OversizeBehavior 枚举
+
+| 行为 | 说明 |
+|------|------|
+| `THROW_EXCEPTION` | 池满时抛出异常 |
+| `RETURN_NULL` | 池满时返回 null |
+| `CREATE_NEW` | 池满时创建临时对象（不被池管理） |
+| `WAIT_FOR_AVAILABLE` | 池满时阻塞等待 |
+
+### 使用示例
+
+```java
+ObjectPoolPolicy<MyObject> policy = new ObjectPoolPolicy<>() {
+    public MyObject create() { return new MyObject(); }
+    public boolean validate(MyObject o) { return true; }
+    public void destroy(MyObject o) { o.close(); }
+    public OversizeBehavior oversizeBehavior() { return OversizeBehavior.CREATE_NEW; }
+};
+
+ObjectPool<MyObject> pool = DefaultObjectPoolProvider.getInstance().create(policy, 10);
+MyObject obj = pool.acquire();
+// ... 使用 ...
+pool.release(obj);
+```
+
+### DefaultObjectPoolProvider（单例）
+
+`ConcurrentMap<Class<?>, ObjectPool<?>>` 缓存池实例，按策略类型去重。`remove()` 移除指定策略的池。
+
+---
+
+## 三、单例容器
+
+`Singleton` 提供线程安全的全局单例工厂：
+
+```java
+// 自动反射创建
+MyService svc = Singleton.getInstance(MyService.class);
+
+// 带 Supplier 创建
+MyService svc2 = Singleton.get(MyService.class, () -> new MyService(config));
+```
+
+内部使用 `ConcurrentHashMap.computeIfAbsent` 确保原子性。
+
+---
+
+## 四、元组
+
+不可变、可序列化的强类型元组，全部基于 Java `Record`：
+
+### Tuple 接口
+
+| 方法 | 说明 |
+|------|------|
+| `size()` | 元组大小 |
+| `value(int index)` | 按索引取值 |
+| `values()` | 所有值的不可变 List |
+| `contains(Object)` | 是否包含某值 |
+| `indexOf(Object)` / `lastIndexOf(Object)` | 查找位置 |
+| `toArray()` / `toArray(X[])` | 转数组 |
+| `equalsIgnoreOrder(Tuple)` | 忽略顺序的等值比较 |
+| `iterator()` | 迭代器遍历 |
+
+### 元组类型
+
+| Record | 泛型参数 | 静态工厂 |
+|--------|---------|----------|
+| `Solo<V>` | 1 | `of(v)` `from(T[])` `from(List)` |
+| `Duet<V1,V2>` | 2 | `of(v1,v2)` `from(T[])` `empty()` |
+| `Trio<V1..V3>` | 3 | 同上 |
+| `Quartet<V1..V4>` | 4 | 同上 |
+| `Quintet<V1..V5>` | 5 | 同上 |
+| `Sextet<V1..V6>` | 6 | 同上 |
+| `Septet<V1..V7>` | 7 | 同上 |
+| `Octet<V1..V8>` | 8 | 同上 |
+| `Nonet<V1..V9>` | 9 | 同上 |
+| `Decet<V1..V10>` | 10 | 同上 |
+
+```java
+Duet<String, Integer> pair = Duet.of("key", 42);
+Trio<String, Integer, Boolean> triple = Trio.of("a", 1, true);
+```
+
+---
+
+## 五、注解驱动校验
+
+元注解式校验框架，支持自定义注解与校验逻辑分离：
+
+### 架构
+
+```
+@Required ──→ @Validation(validator = RequiredValidator.class)
+                     │
+                     ▼
+              Validator<Required>.validate(annotation, value)
+                     │
+                     ▼
+              Result(boolean result, String message)
+```
+
+### 核心类型
+
+| 类型 | 作用 |
+|------|------|
+| `@Validation` | 元注解：将自定义注解绑定到 `Validator` 实现 |
+| `Validator<A>` | 校验器契约 → `Result validate(A annotation, Object value)` |
+| `@Required` | 必填校验注解：`allowEmpty`, `message`, `annotation` |
+| `RequiredValidator` | `Required` 校验实现：null 检查、空字符串检查 |
+| `@StringLength` | 字符串长度校验：`min`, `max`, `message` |
+| `StringLengthValidator` | `StringLength` 校验实现：长度范围检查 |
+| `@Range` | 数值范围校验：`min`, `max`, `inclusiveMin`, `inclusiveMax`, `message` |
+| `RangeValidator` | `Range` 校验实现：数值边界检查 |
+| `@RegularExpression` | 正则表达式校验：`value`（正则）, `message` |
+| `RegularExpressionValidator` | `RegularExpression` 校验实现：正则匹配检查 |
+
+### 内置校验注解详情
+
+| 注解 | 属性 | 校验逻辑 |
+|------|------|----------|
+| `@Required` | `allowEmpty`（默认 false）, `message` | null 检查；`allowEmpty=false` 时额外检查空字符串 |
+| `@StringLength` | `min`（默认 0）, `max`（默认 MAX_VALUE）, `message` | 字符串长度必须在 [min, max] 区间 |
+| `@Range` | `min`, `max`, `inclusiveMin`, `inclusiveMax`, `message` | 数值范围检查，支持开/闭区间 |
+| `@RegularExpression` | `value`（必填正则）, `message` | 字符串必须匹配正则表达式 |
+
+### 扩展自定义校验
+
+```java
+@Retention(RUNTIME)
+@Target(FIELD)
+@Validation(validator = MyValidator.class)
+public @interface MyConstraint {
+    int min() default 0;
+    String message() default "";
+}
+```
+
+---
+
+## 六、安全
+
+### 异常层次
+
+```text
+RuntimeException
+├── AuthenticationException          # 认证失败
+├── UnauthorizedAccessException      # 授权拒绝
+├── AccountException (抽象)           # 账户异常 + identity + 详情 Map
+└── CredentialException (抽象)        # 凭据异常 + credential + 详情 Map
+```
+
+`AccountException` 和 `CredentialException` 支持链式 `with(key, value)` 附加结构化详情。
+
+### UserPrincipal — 主体包装器
+
+封装 `javax.security.auth.Subject`，提供角色检查与守卫方法：
+
+| 方法 | 说明 |
+|------|------|
+| `getName()` | 主体名称 |
+| `getClaim(String)` | 按声明类型取值 |
+| `isAuthenticated()` | 是否已认证 |
+| `hasRole(String)` / `isInRoles(String...)` | 角色检查 |
+| `ensureAuthenticated()` | 未认证则抛异常 |
+| `ensureHasRole(String)` / `ensureInRoles(String...)` | 角色守卫 |
+
+### UserClaimTypes — 声明类型常量
+
+OpenID Connect 风格声明常量 + 扩展：
+
+```java
+UserClaimTypes.SUBJECT       // "sub"
+UserClaimTypes.NAME          // "name"
+UserClaimTypes.EMAIL         // "email"
+UserClaimTypes.ROLE          // "role"
+UserClaimTypes.TENANT_ID     // "tenant_id"
+```
+
+---
+
+## 七、HTTP
+
+### HTTP 状态异常体系
+
+`HttpStatusException` 承载 HTTP 状态码的运行时异常，子类固定状态码以支持全局异常处理映射：
+
+```text
+RuntimeException
+└── HttpStatusException(int statusCode, String message [, Throwable cause])
+    ├── BadRequestException          → 400
+    ├── ForbiddenException           → 403
+    ├── ResourceNotFoundException    → 404
+    ├── MethodNotAllowedException    → 405
+    ├── RequestTimeoutException      → 408
+    ├── ConflictException            → 409
+    ├── UpgradeRequiredException     → 426
+    ├── TooManyRequestsException     → 429
+    ├── InternalServerErrorException → 500
+    ├── BadGatewayException          → 502
+    ├── ServiceUnavailableException  → 503
+    └── GatewayTimeoutException      → 504
+```
+
+```java
+throw new ResourceNotFoundException("用户不存在: " + userId);
+```
+
+### RequestContext — 请求上下文
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `connectionId` | `String` | 连接 ID |
+| `requestUri` | `String` | 请求 URI |
+| `requestMethod` | `String` | HTTP 方法 |
+| `remoteIpAddress` | `String` | 远程 IP |
+| `remotePort` | `int` | 远程端口 |
+| `traceIdentifier` | `String` | 追踪标识 |
+| `requestId` | `String` | 请求 ID |
+| `authorization` | `String` | 快捷获取 Authorization 头 |
+| `user` | `UserPrincipal` | 当前用户 |
+
+### RequestContextAccessor — 访问器
+
+| 类型 | 说明 |
+|------|------|
+| `RequestContextAccessor`（接口） | `getContext()` / `setContext()` / `removeContext()` |
+| `DefaultRequestContextAccessor` | `ThreadLocal<RequestContext>` 实现 |
+| `DelegateRequestContextAccessor`（`@FunctionalInterface`） | 委托访问器 |
+
+### 跨线程传播
+
+| 类型 | 方法 | 说明 |
+|------|------|------|
+| `RequestContextAwareExecutor` | `fromCommonPool()` / `fromExecutor()` | 创建上下文感知的执行器 |
+| `RequestContextCopyingDecorator` | `decorate(Runnable)` | 包装 Runnable 以复制上下文 |
+
+---
+
+## 八、反射 & DI 抽象
+
+### ServiceProvider — 服务定位器契约
+
+Euonia 内部 DI 抽象层，解耦业务代码与具体 DI 容器：
+
+```java
+public interface ServiceProvider {
+    <T> Optional<T> getService(Class<T> type);
+    <T> Optional<T> getService(Class<T> type, Class<?>... genericTypeArguments);
+    <T> Optional<T> getService(Class<T> type, String serviceName);
+    <T> T getRequiredService(Class<T> type);
+    <T> List<T> getServices(Class<T> type);
+    <T> List<T> getServices(Class<T> type, Class<?>... genericTypeArguments);
+    <T> T createInstance(Class<T> type, Object... args);
+    <T> T getServiceOrCreate(Class<T> type, Object... args);  // 默认方法
+}
+```
+
+| 实现 | 说明 |
+|------|------|
+| `SimpleServiceProvider` | 内存 Map 注册（`ConcurrentHashMap`），手动 `register(type, instance)` |
+| `DelegateServiceProvider` | 委托到外部 `Function<Class<?>, ?>` bean 工厂（与 Spring 集成） |
+
+### ClassScanner — 类路径扫描
+
+```java
+List<Class<?>> classes = ClassScanner.scan("com.euonia.core");
+```
+
+支持 `file:` 和 `jar:` 协议的包扫描。
+
+### TypeHelper — 类型转换工具
+
+| 方法 | 说明 |
+|------|------|
+| `coerceValue(Class<T>, Object)` | 值类型转换（primitives、枚举、日期/时间、集合/Map、UUID、char） |
+| `boxIfPrimitive(Class<?>)` | 基本类型→包装类型 |
+| `isPrimitiveNumber(Class<?>)` | 是否为数值基本类型 |
+| `defaultPrimitiveValue(Class<?>)` | 基本类型默认值 |
+
+内部使用 Jackson `ObjectMapper` 进行复杂对象转换（可选依赖，运行时反射调用）。
+
+### GenericType\<T\> — 泛型捕获（类型令牌模式）
+
+```java
+// 运行时捕获 List<String> 的泛型参数
+GenericType<List<String>> type = new GenericType<>() {};
+Type actualType = type.getType();        // List<String>
+
+// 通过静态工厂合成
+GenericType<List<String>> synthetic = GenericType.forType(
+    new SyntheticParameterizedType(List.class, String.class)
+);
+```
+
+### @DisplayName — 字段展示名注解
+
+```java
+@DisplayName("用户姓名")
+private String userName;
+```
+
+---
+
+## 九、其他工具
+
+### PriorityQueue\<E, K\> — 带优先级的优先队列
+
+```java
+PriorityQueue<String, Integer> pq = new PriorityQueue<>();
+pq.add("high", 1);
+pq.add("low", 10);
+String highest = pq.poll();  // "high"
+```
+
+### PriorityValueFinder — 优先级值查找器
+
+按优先级递减遍历 supplier 队列，返回首个匹配 predicate 的值：
+
+```java
+PriorityValueFinder.find(queueConsumer, Predicate.isEqual(target), defaultValue);
+```
+
+### Pair — 键值 Record
+
+基于 Java `Record` 的不可变键值对：
+
+```java
+Pair<String, Integer> p = Pair.of("score", 100);
+K key = p.key();     // "score"
+V value = p.value(); // 100
+```
+
+### StringUtility — 字符串工具
+
+| 方法 | 说明 |
+|------|------|
+| `isNullOrEmpty(String)` | 是否为 null 或空串 |
+| `isNullOrBlank(String)` | 是否为 null、空串或纯空白 |
+| `capitalizeFirstLetter(String)` | 首字母大写 |
+| `decapitalizeFirstLetter(String)` | 首字母小写 |
+| `capitalizeFirstLetterWithUnderscore(String)` | `foo_bar` → `FooBar` |
+| `collapse(String...)` / `collapse(Supplier<String>...)` | 返回第一个非空/非空白值 |
+
+### ObjectUtility — 反射工具
+
+| 方法 | 说明 |
+|------|------|
+| `getMethod(Class<?>, String, Class<?>...)` | 查找 public 方法 → `Optional<Method>` |
+| `getDeclaredMethod(Class<?>, String, Class<?>...)` | 查找已声明方法（含私有） |
+| `invokeMethod(Object, String, Object...)` | 反射调用方法 |
+| `invokeMethod(Class<T>, Object, String, Object...)` | 带返回类型的反射调用 |
+
+### Assert — 断言工具
+
+| 方法 | 说明 |
+|------|------|
+| `notNull(Object, String)` / `notNull(Object, Supplier<String>)` | 断言非 null |
+| `notEmpty(String, String)` | 断言字符串非空 |
+| `notEmpty(List<?>, String)` | 断言列表非空 |
+| `notEmpty(Object[], String)` | 断言数组非空 |
+| `notContains(List<T>, Predicate<T>, String)` | 断言列表不含匹配元素 |
+| `notContains(T[], Predicate<T>, String)` | 断言数组不含匹配元素 |
+
+---
+
+## 设计模式
+
+| 模式 | 应用位置 |
+|------|---------|
+| **门面 (Facade)** | `ObjectId` — 统一五种 ID 生成策略 |
+| **单例 (Singleton)** | `Singleton`、`DefaultObjectPoolProvider`、`DefaultRequestContextAccessor` |
+| **策略 (Strategy)** | `ObjectPoolPolicy` 生命周期；`GuidType` 生成模式 |
+| **工厂方法 (Factory Method)** | 所有 Record 的 `of()`/`from()`/`empty()`；`SnowflakeId.getInstance()` |
+| **模板方法 (Template Method)** | `AccountException`/`CredentialException` 抽象基类 |
+| **元注解 (Meta-Annotation)** | `@Validation` 绑定注解到校验器 |
+| **类型令牌 (Type Token)** | `GenericType<T>` + `SyntheticParameterizedType` |
+| **委托 (Delegate)** | `DelegateServiceProvider`、`DelegateRequestContextAccessor` |
+| **装饰器 (Decorator)** | `RequestContextCopyingDecorator` — 包装 Runnable 传播上下文 |
+| **对象池 (Object Pool)** | `DefaultObjectPool<T>` + `ObjectPoolPolicy<T>` |
+| **断言 (Assertion)** | `Assert` — 防御性编程前置条件检查 |
+
+---
+
+## API 参考
+
+### 导出包总览
+
+| 包名 | 类数 | 说明 |
+|------|------|------|
+| `com.euonia.annotation` | 10 | 自定义验证注解及验证器实现 |
+| `com.euonia.core` | 16 | 核心工具类：对象池、ID 生成器、优先级队列等 |
+| `com.euonia.http` | 20 | HTTP 异常模型与请求上下文抽象 |
+| `com.euonia.reflection` | 8 | 反射工具：类扫描、服务提供、泛型类型处理 |
+| `com.euonia.security` | 6 | 安全相关：认证异常、用户主体模型 |
+| `com.euonia.tuple` | 11 | 元组类型：Solo ~ Decet（1 到 10 元素） |
+| `com.euonia.utility` | 3 | 通用工具类：断言、对象反射、字符串操作 |
+
+> 完整的 API 类级文档见 [apis.md](./apis.md) 及各独立类文档。
+
+---
+
+## Maven
+
+```xml
+<dependency>
+    <groupId>com.euonia</groupId>
+    <artifactId>core</artifactId>
+    <version>${euonia.version}</version>
+</dependency>
+```
+
+**零外部运行时依赖**，仅测试依赖 JUnit Jupiter 5。
+
+## 模块依赖关系
+
+`core` 是框架最底层模块，被所有其他 Euonia 模块依赖：
+
+```
+sample, spring, osba, ddd, uow, bus-*, pipeline → core
+```
+
+## 作者
+
+damon (zhaorong@outlook.com)
