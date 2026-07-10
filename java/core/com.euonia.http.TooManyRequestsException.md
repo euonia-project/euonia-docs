@@ -1,25 +1,26 @@
 # TooManyRequestsException
 
-> The TooManyRequestsException class represents an HTTP 429 Too Many Requests error. It extends the HttpStatusException class.
+> HTTP 429 Too Many Requests 异常。
 
 - **Module**: `core`
 - **Type**: `class`
 - **Package**: `com.euonia.http`
 - **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 
 ### TooManyRequestsException (constructor)
 
-> Creates a new TooManyRequestsException with the specified message.
+> 使用指定的消息构造异常。
 
 - **Parameters**:
-  - `message` (`String`): The detail message for the exception
+  - `message` (`String`): 错误描述
 
 ### TooManyRequestsException (constructor)
 
-> Creates a new TooManyRequestsException with the specified message and cause.
+> 使用指定的消息和原因构造异常。
 
 - **Parameters**:
-  - `message` (`String`): The detail message for the exception
-  - `cause` (`Throwable`): The cause of the exception
+  - `message` (`String`): 错误描述
+  - `cause` (`Throwable`): 异常的根因

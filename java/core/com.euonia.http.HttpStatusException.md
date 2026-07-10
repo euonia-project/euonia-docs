@@ -1,33 +1,35 @@
 # HttpStatusException
 
-> The HttpStatusException is thrown when an HTTP request results in an error status code. It contains the HTTP status code and a message describing the error. This exception can be used to represent various HTTP errors, such as 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Internal Server Error, etc.
+> HTTP 状态码异常基类，包含 HTTP 状态码和描述错误的消息。
+> 可用于表示各种 HTTP 错误，如 400、401、403、404、500 等。
 
 - **Module**: `core`
 - **Type**: `class`
 - **Package**: `com.euonia.http`
 - **Extends**: `RuntimeException`
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 
 ### HttpStatusException (constructor)
 
-> Creates a new HttpStatusException with the specified status code and message.
+> 使用指定的状态码和消息构造异常。
 
 - **Parameters**:
-  - `statusCode` (`int`): The HTTP status code
-  - `message` (`String`): The detail message for the exception
+  - `statusCode` (`int`): HTTP 状态码
+  - `message` (`String`): 错误描述
 
 ### HttpStatusException (constructor)
 
-> Creates a new HttpStatusException with the specified status code, message, and cause.
+> 使用指定的状态码、消息和原因构造异常。
 
 - **Parameters**:
-  - `statusCode` (`int`): The HTTP status code
-  - `message` (`String`): The detail message for the exception
-  - `cause` (`Throwable`): The cause of the exception
+  - `statusCode` (`int`): HTTP 状态码
+  - `message` (`String`): 错误描述
+  - `cause` (`Throwable`): 异常的根因
 
 ### getStatusCode
 
-> Returns the HTTP status code.
+> 获取 HTTP 状态码。
 
-- **Returns**: `int` - The HTTP status code
+- **Returns**: `int` - HTTP 状态码

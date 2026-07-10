@@ -1,25 +1,26 @@
 # ResourceNotFoundException
 
-> The ResourceNotFoundException class represents an HTTP 404 Not Found error. It extends the HttpStatusException class.
+> HTTP 404 Not Found 异常。
 
 - **Module**: `core`
 - **Type**: `class`
 - **Package**: `com.euonia.http`
 - **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 
 ### ResourceNotFoundException (constructor)
 
-> Creates a new ResourceNotFoundException with the specified message.
+> 使用指定的消息构造异常。
 
 - **Parameters**:
-  - `message` (`String`): The detail message for the exception
+  - `message` (`String`): 错误描述
 
 ### ResourceNotFoundException (constructor)
 
-> Creates a new ResourceNotFoundException with the specified message and cause.
+> 使用指定的消息和原因构造异常。
 
 - **Parameters**:
-  - `message` (`String`): The detail message for the exception
-  - `cause` (`Throwable`): The cause of the exception
+  - `message` (`String`): 错误描述
+  - `cause` (`Throwable`): 异常的根因

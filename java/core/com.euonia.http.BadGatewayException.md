@@ -1,25 +1,26 @@
 # BadGatewayException
 
-> The BadGatewayException is thrown when an HTTP request results in a 502 Bad Gateway status code. This exception indicates that the server, while acting as a gateway or proxy, received an invalid response from the upstream server.
+> HTTP 502 Bad Gateway 异常，表示服务器作为网关或代理时从上游服务器收到无效响应。
 
 - **Module**: `core`
 - **Type**: `class`
 - **Package**: `com.euonia.http`
 - **Extends**: [`HttpStatusException`](./com.euonia.http.HttpStatusException.md)
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 
 ### BadGatewayException (constructor)
 
-> Creates a new BadGatewayException with the specified message.
+> 使用指定的消息构造异常。
 
 - **Parameters**:
-  - `message` (`String`): The detail message for the exception
+  - `message` (`String`): 错误描述
 
 ### BadGatewayException (constructor)
 
-> Creates a new BadGatewayException with the specified message and cause.
+> 使用指定的消息和原因构造异常。
 
 - **Parameters**:
-  - `message` (`String`): The detail message for the exception
-  - `cause` (`Throwable`): The cause of the exception
+  - `message` (`String`): 错误描述
+  - `cause` (`Throwable`): 异常的根因

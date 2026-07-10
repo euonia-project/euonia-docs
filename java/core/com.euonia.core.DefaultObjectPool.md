@@ -5,7 +5,7 @@
 > 当池耗尽时，支持多种超限行为：
 > - `THROW_EXCEPTION` —— 抛出 RuntimeException
 > - `RETURN_NULL` —— 返回 null
-> - `CREATE_NEW` —— 在容量之外创建新实例
+> - `CREATE_NEW` / `AUTO_ADJUST` —— 在容量之外创建新实例
 > - `WAIT_FOR_AVAILABLE` —— 阻塞调用线程直到有对象被释放
 
 - **Module**: `core`

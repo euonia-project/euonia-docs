@@ -46,8 +46,22 @@
   - `values` (`List<X>`): 值列表
 - **Returns**: `Solo<X>` - 新的 Solo 实例
 
-### empty
+### size
 
-> 创建一个所有值均为 null 的新 Solo 实例。
+> 返回元组中值的数量。
 
-- **Returns**: `Solo<V>` - 空 Solo 实例
+- **Returns**: `int` - 元组中值的数量（固定为 1）
+
+### values
+
+> 返回包含元组中所有值的列表。
+
+- **Returns**: `List<Object>` - 包含元组中所有值的列表
+
+### contains
+
+> 检查元组是否包含指定值。
+
+- **Parameters**:
+  - `value` (`Object`): 要检查的值
+- **Returns**: `boolean` - 如果元组包含该值则返回 true
