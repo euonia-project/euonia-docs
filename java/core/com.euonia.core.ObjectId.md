@@ -1,18 +1,19 @@
 # ObjectId
 
-> ObjectId 是一个表示对象唯一标识符的类。可以使用不同的算法生成，如 Snowflake、GUID、Random 和 ULID。ObjectId 的值可以是 long、String、UUID 或 Integer 类型。该类是不可变的。
+> ObjectId 是一个表示对象唯一标识符的类。可以使用不同的算法生成，如 Snowflake、GUID、Random 和 ULID。ObjectId 的值可以是 long、String、UUID 或 Integer 类型。该类提供了使用不同算法生成 ObjectId 的方法，并重写了 hashCode、equals 和 toString 方法以确保正确的功能。ObjectId 类是不可变的，这意味着一旦创建，其值就不能更改。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.core`
 - **Author**: damon(zhaorong@outlook.com)
 
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `value` | `Object` | ObjectId 的值 |
-
 ## Methods
+
+### getValue
+
+> 获取 ObjectId 的值。
+
+- **Returns**: `Object` - ObjectId 的值
 
 ### ObjectId (constructor)
 
@@ -77,6 +78,24 @@
 ### newRandomId
 
 > 生成新的随机字符串 ID。
+
+- **Parameters**:
+  - `seed` (`long`): 种子值
+- **Returns**: `String` - 新的随机字符串 ID
+
+## Usage
+
+```java
+// 使用不同算法生成 ObjectId
+ObjectId id1 = ObjectId.snowflake();
+ObjectId id2 = ObjectId.guid();
+ObjectId id3 = ObjectId.guid(GuidType.SEQUENTIAL_AS_STRING);
+ObjectId id4 = ObjectId.random();
+ObjectId id5 = ObjectId.ulid();
+
+// 生成随机字符串 ID
+String randomId = ObjectId.newRandomId(System.currentTimeMillis());
+```
 
 - **Parameters**:
   - `seed` (`long`): 种子值

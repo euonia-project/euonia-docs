@@ -2,7 +2,7 @@
 
 > 对象反射操作工具类，提供安全的方法查找和反射调用功能。所有方法都通过 Optional 优雅地处理方法不存在的情况，避免直接抛出异常。该类为抽象工具类，不可实例化。
 
-- **Type**: class
+- **Type**: `class`
 - **Package**: `com.euonia.utility`
 - **Author**: damon(zhaorong@outlook.com)
 

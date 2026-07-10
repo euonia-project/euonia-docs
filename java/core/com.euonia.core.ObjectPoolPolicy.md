@@ -1,10 +1,17 @@
 # ObjectPoolPolicy
 
-> ObjectPoolPolicy 是一个定义对象池行为的接口。它指定了对象池如何创建、验证和销毁对象，以及当所有对象都在使用中时池应该如何处理。
+> ObjectPoolPolicy 是一个定义对象池行为的接口。它指定了对象池如何创建、验证和销毁对象，以及当所有对象都在使用中时池是否应该中断。
 
-- **Type**: interface
+- **Module**: `core`
+- **Type**: `interface`
 - **Package**: `com.euonia.core`
 - **Author**: damon(zhaorong@outlook.com)
+
+## Type Parameters
+
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `T` | *(无)* | 池中对象的类型 |
 
 ## Methods
 

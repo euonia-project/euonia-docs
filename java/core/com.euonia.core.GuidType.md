@@ -2,7 +2,8 @@
 
 > 描述要生成的 GUID 值的类型。
 
-- **Type**: enum
+- **Module**: `core`
+- **Type**: `enum`
 - **Package**: `com.euonia.core`
 - **Author**: damon(zhaorong@outlook.com)
 

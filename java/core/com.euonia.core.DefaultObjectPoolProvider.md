@@ -1,17 +1,13 @@
 # DefaultObjectPoolProvider
 
-> 对象池提供者，用于根据提供的策略创建和管理对象池。它使用并发映射来缓存不同策略的对象池，确保每个策略只有一个关联的池。
+> 对象池提供者，用于根据提供的策略创建和管理对象池。
+> 它使用并发映射来缓存不同策略的对象池，确保每个策略只有一个关联的池。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.core`
+- **Implements**: [`ObjectPoolProvider`](./com.euonia.core.ObjectPoolProvider.md)
 - **Author**: damon(zhaorong@outlook.com)
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `instance` | `volatile static DefaultObjectPoolProvider` | 单例实例 |
-| `cache` | `ConcurrentMap<Class<?>, ObjectPool<?>>` | 缓存不同策略的对象池的并发映射 |
 
 ## Methods
 

@@ -1,23 +1,13 @@
 # ShortUniqueId
 
-> ShortUniqueId 是一个工具类，用于从整数或长整数生成短且唯一的字符串 ID。它提供了将整数、长整数和十六进制字符串编码为短唯一 ID 以及反向解码的方法。该实现基于 Hashids 算法，该算法旨在创建短小、非连续且 URL 友好的 ID。
+> ShortUniqueId 是一个工具类，用于从整数或长整数生成短且唯一的字符串 ID。
+> 它提供了将整数、长整数和十六进制字符串编码为短唯一 ID 以及反向解码的方法。
+> 该实现基于 Hashids 算法，该算法旨在创建短小、非连续且 URL 友好的 ID。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.core`
 - **Author**: damon(zhaorong@outlook.com)
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `DEFAULT_ALPHABET` | `String` | 默认字母表 |
-| `DEFAULT_SEPS` | `String` | 默认分隔符 |
-| `DEFAULT` | `ShortUniqueId` | 默认实例 |
-| `alphabet` | `char[]` | 编码使用的字母表 |
-| `seps` | `char[]` | 编码使用的分隔符 |
-| `guards` | `char[]` | 编码使用的守卫字符 |
-| `salt` | `char[]` | 编码使用的盐值 |
-| `minHashLength` | `int` | 最小哈希长度 |
 
 ## Methods
 
@@ -78,6 +68,23 @@
 > 将一个或多个长整数编码为短唯一字符串 ID。
 
 - **Parameters**:
+  - `numbers` (`long...`): 要编码的长整数
+- **Returns**: `String` - 表示输入长整数的短唯一字符串 ID
+
+### encode
+
+> 将长整数集合编码为短唯一字符串 ID。
+
+- **Parameters**:
+  - `numbers` (`Collection<Long>`): 要编码的长整数集合
+- **Returns**: `String` - 表示输入长整数的短唯一字符串 ID
+
+## Usage
+
+```java
+ShortUniqueId suid = ShortUniqueId.getDefault();
+String id = suid.encode(12345);
+```
   - `numbers` (`long...`): 要编码的长整数
 - **Returns**: `String` - 表示输入长整数的短唯一字符串 ID
 

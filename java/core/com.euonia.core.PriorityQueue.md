@@ -1,16 +1,20 @@
 # PriorityQueue
 
-> PriorityQueue 是一个基于 Java 内置优先级队列实现的通用优先级队列类。它使用 Pair 类来存储元素和其对应的优先级，并通过 Comparator 来确保队列按照优先级排序。
+> PriorityQueue 是一个基于 Java 内置优先级队列实现的通用优先级队列类。
+> 它使用 Pair 类来存储元素和其对应的优先级，并通过 Comparator 来确保队列按照优先级排序。
+> 该类提供了基本的队列操作方法，如添加元素、检索和移除最高优先级元素、查看队列头部元素、清空队列、获取队列大小以及检查队列是否为空。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `class`
 - **Package**: `com.euonia.core`
 - **Author**: damon(zhaorong@outlook.com)
 
-## Fields
+## Type Parameters
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `queue` | `java.util.PriorityQueue<Pair<K, E>>` | 内部优先级队列 |
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `E` | *(无)* | 元素类型 |
+| `K` | `extends Comparable<K>` | 优先级类型，必须实现 Comparable 接口 |
 
 ## Methods
 

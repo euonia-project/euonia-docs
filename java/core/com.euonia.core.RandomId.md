@@ -2,15 +2,10 @@
 
 > 基于种子值生成随机 ID 的工具。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class` (package-private)
 - **Package**: `com.euonia.core`
 - **Author**: damon(zhaorong@outlook.com)
-
-## Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `CHARS` | `String[]` | 字符集数组（0-9, a-z, A-Z，共 62 个字符） |
 
 ## Methods
 

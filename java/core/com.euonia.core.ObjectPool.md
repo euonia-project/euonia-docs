@@ -2,9 +2,16 @@
 
 > 对象池接口，定义了获取池容量、关联的策略以及获取和释放对象的方法。
 
-- **Type**: interface
+- **Module**: `core`
+- **Type**: `interface`
 - **Package**: `com.euonia.core`
 - **Author**: damon(zhaorong@outlook.com)
+
+## Type Parameters
+
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `T` | *(无)* | 池管理的对象类型 |
 
 ## Methods
 

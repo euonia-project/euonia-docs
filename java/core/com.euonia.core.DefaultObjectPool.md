@@ -1,20 +1,24 @@
 # DefaultObjectPool
 
 > 通用对象池实现，管理类型为 T 的可重用对象池。该池使用 `ObjectPoolPolicy` 来定义对象的创建、验证和销毁行为。对象在首次获取时惰性创建 —— 当空闲池为空且使用中的对象数低于容量时，才会创建新对象。
+>
+> 当池耗尽时，支持多种超限行为：
+> - `THROW_EXCEPTION` —— 抛出 RuntimeException
+> - `RETURN_NULL` —— 返回 null
+> - `CREATE_NEW` —— 在容量之外创建新实例
+> - `WAIT_FOR_AVAILABLE` —— 阻塞调用线程直到有对象被释放
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.core`
+- **Implements**: [`ObjectPool`](./com.euonia.core.ObjectPool.md)&lt;T&gt;
 - **Author**: damon(zhaorong@outlook.com)
 
-## Fields
+## Type Parameters
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `MAX_CAPACITY` | `int` | 最大允许容量，防止无限制扩容。值为 1,048,576 |
-| `capacity` | `int` | 池容量 —— 触发超限行为之前允许的最大使用中对象数 |
-| `idlePool` | `Queue<T>` | 空闲（可用）对象队列 |
-| `policy` | `ObjectPoolPolicy<T>` | 定义创建/验证/销毁/超限行为的策略 |
-| `inUseCount` | `AtomicInteger` | 当前正在使用中的对象计数 |
+| Parameter | Bound | Description |
+|-----------|-------|-------------|
+| `T` | *(无)* | 池管理的对象类型 |
 
 ## Methods
 

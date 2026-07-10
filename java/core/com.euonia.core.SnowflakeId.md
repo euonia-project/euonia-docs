@@ -1,23 +1,30 @@
 # SnowflakeId
 
-> SnowflakeId 是一个分布式唯一 ID 生成器，灵感来源于 Twitter 的 Snowflake 算法。它基于当前时间戳、工作节点 ID、数据中心 ID 和序列号生成 64 位唯一 ID。生成的 ID 可按时间排序，且可在分布式环境中生成，无需节点间协调。自定义纪元设置为 2021 年 1 月 1 日。
+> SnowflakeId 是一个分布式唯一 ID 生成器，灵感来源于 Twitter 的 Snowflake 算法。
+> 它基于当前时间戳、工作节点 ID、数据中心 ID 和序列号生成 64 位唯一 ID。
+> 生成的 ID 可按时间排序，且可在分布式环境中生成，无需节点间协调。
+>
+> 生成的 ID 结构如下：
+> - 41 位用于时间戳（自自定义纪元以来的毫秒数）
+> - 5 位用于数据中心 ID
+> - 5 位用于工作节点 ID
+> - 12 位用于序列号
+>
+> 此实现允许每个工作节点每毫秒生成最多 1024 个唯一 ID，并支持最多 32 个数据中心，每个数据中心最多 32 个工作节点。
+> 自定义纪元设置为 2021 年 1 月 1 日。
 
-- **Type**: class
+- **Module**: `core`
+- **Type**: `final class`
 - **Package**: `com.euonia.core`
 - **Author**: damon(zhaorong@outlook.com)
 
-## Fields
+## Constants
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `EPOCH` | `long` | 自定义纪元：2021-01-01 00:00:00 UTC（1609459200000L） |
-| `WORKER_ID_BITS` | `long` | 工作节点 ID 位数：5 |
-| `DATACENTER_ID_BITS` | `long` | 数据中心 ID 位数：5 |
-| `SEQUENCE_BITS` | `long` | 序列号位数：12 |
-| `workerId` | `long` | 工作节点 ID |
-| `datacenterId` | `long` | 数据中心 ID |
-| `sequence` | `long` | 序列号 |
-| `lastTimestamp` | `long` | 上一次生成 ID 的时间戳 |
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `MAX_WORKER_ID` | `31` | 最大工作节点 ID |
+| `MAX_DATACENTER_ID` | `31` | 最大数据中心 ID |
+| `MAX_SEQUENCE` | `4095` | 最大序列号 |
 
 ## Methods
 
@@ -41,3 +48,10 @@
 > 生成下一个唯一 ID。该方法是线程安全的，确保在多线程环境下生成的 ID 仍然唯一。如果系统时钟回退，将抛出异常。
 
 - **Returns**: `long` - 下一个唯一的 64 位 ID
+
+## Usage
+
+```java
+SnowflakeId idGen = SnowflakeId.getInstance();
+long id = idGen.nextId();
+```
