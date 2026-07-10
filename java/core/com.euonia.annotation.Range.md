@@ -2,11 +2,9 @@
 
 > 用于指定数值范围的注解。可应用于字段或方法参数，表示该数值必须在指定的最小值和最大值之间。
 >
-> 该注解支持以下属性：
-> - `min`：指定允许的最小值，默认为 `Double.MIN_VALUE`。
-> - `max`：指定允许的最大值，默认为 `Double.MAX_VALUE`。
-> - `inclusiveMin`：是否包含最小值，默认为 `false`。
-> - `inclusiveMax`：是否包含最大值，默认为 `false`。
+> 该注解支持两种方式指定范围：
+> - **区间表达式**：通过 `value` 属性指定，如 `"[1,10]"`、`"(1,10]"`，此时忽略 `min`/`max`/`minBoundary`/`maxBoundary`。
+> - **显式属性**：通过 `min`/`max`/`minBoundary`/`maxBoundary` 分别指定。
 
 - **Module**: `core`
 - **Type**: `annotation`
@@ -31,29 +29,52 @@
 
 | Element | Type | Default | Description |
 |---------|------|---------|-------------|
+| `value()` | `String` | `""` | 指定值范围的区间表达式，例如 `"[1,10]"`、`"(1,10)"`、`"(1,10]"` 等。如果指定了区间表达式则忽略 min、max、minBoundary 和 maxBoundary 属性。 |
 | `min()` | `double` | `Double.MIN_VALUE` | 指定允许的最小值。 |
 | `max()` | `double` | `Double.MAX_VALUE` | 指定允许的最大值。 |
-| `inclusiveMin()` | `boolean` | `false` | 是否包含最小值。为 `true` 时允许指定值等于最小值。 |
-| `inclusiveMax()` | `boolean` | `false` | 是否包含最大值。为 `true` 时允许指定值等于最大值。 |
+| `minBoundary()` | `Boundary` | `EXCLUSIVE` | 指定最小值的边界类型。 |
+| `maxBoundary()` | `Boundary` | `EXCLUSIVE` | 指定最大值的边界类型。 |
 | `message()` | `String` | `""` | 自定义验证失败时的错误消息。默认为空字符串。 |
+
+## Inner Types
+
+### Boundary
+
+> 枚举类型，表示范围的边界类型。
+
+- **Type**: `enum`
+
+| Constant | Description |
+|----------|-------------|
+| `INCLUSIVE` | 包含边界值 |
+| `EXCLUSIVE` | 不包含边界值 |
 
 ## Usage
 
 ```java
-// 字段级：限制 age 在 1 ~ 150（含边界）
-@Range(min = 1, max = 150, inclusiveMin = true, inclusiveMax = true)
+// 方式一：区间表达式（推荐，简洁直观）
+@Range("[1, 150]")        // 1 ≤ x ≤ 150（两端包含）
 private int age;
 
-// 参数级：限制 score 在 0 ~ 100（不含边界）
-public void setScore(@Range(min = 0, max = 100) double score) {
-    this.score = score;
-}
+@Range("(0, 100)")        // 0 < x < 100（两端不包含）
+private double score;
+
+@Range("(0, 100]")        // 0 < x ≤ 100（左开右闭）
+private double amount;
+
+// 方式二：显式属性
+@Range(min = 1, max = 150, minBoundary = Boundary.INCLUSIVE, maxBoundary = Boundary.INCLUSIVE)
+private int age;
 
 // 仅指定最小值
-@Range(min = 1)
+@Range("[1,]")
 private long positiveNumber;
 
+// 仅指定最大值
+@Range("[,100]")
+private long maxValue;
+
 // 自定义错误消息
-@Range(min = 18, max = 60, message = "年龄必须在18到60之间")
+@Range(value = "[18, 60]", message = "年龄必须在18到60之间")
 private int adultAge;
 ```
