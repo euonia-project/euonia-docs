@@ -21,13 +21,13 @@
 > （未提供注释）
 
 - **Parameters**:
-  - `context` (`RoutedMessage&lt;T&gt;`): 路由消息上下文
-  - `next` (`PipelineDelegate&lt;RoutedMessage&lt;T&gt;, R&gt;`): 管道委托
-- **Returns**: `CompletionStage&lt;R&gt;` - 处理结果
+  - `context` (`MessageEnvelope<T>`): 路由消息上下文
+  - `next` (`PipelineDelegat<MessageEnvelope<T>, >`): 管道委托
+- **Returns**: `CompletionStage<R>` - 处理结果
 
 ## Usage
 
 ```java
-Pipeline<RoutedMessage<MyMessage>, MyResponse> pipeline = ...;
+Pipeline<MessageEnvelope<MyMessage>, MyResponse> pipeline = ...;
 pipeline.use(IncomingLoggingBehavior.class);
 ```

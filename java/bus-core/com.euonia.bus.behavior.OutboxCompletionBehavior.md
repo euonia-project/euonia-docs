@@ -32,6 +32,6 @@
 > （未提供注释）
 
 - **Parameters**:
-  - `context` (`MessageEnvelope&lt;T&gt;`): 消息信封上下文
-  - `next` (`PipelineDelegate&lt;MessageEnvelope&lt;T&gt;, Void&gt;`): 管道委托
-- **Returns**: `CompletionStage&lt;Void&gt;` - 处理结果
+  - `context` (`MessageEnvelope<T>`): 消息信封上下文
+  - `next` (`PipelineDelegate<MessageEnvelope<T>, Void>`): 管道委托
+- **Returns**: `CompletionStage<Void>` - 处理结果
