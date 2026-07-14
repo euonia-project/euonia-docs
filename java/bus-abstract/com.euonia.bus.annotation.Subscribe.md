@@ -4,8 +4,8 @@
 
 - **Type**: annotation
 - **Package**: `com.euonia.bus.annotation`
-- **Target**: `@Target({ElementType.METHOD})` — 可应用于方法
-- **Retention**: `@Retention(RetentionPolicy.RUNTIME)` — 运行时保留
+- **Target**: *METHOD* — 可应用于方法
+- **Retention**: *RUNTIME* — 运行时保留
 - **Author**: damon(zhaorong@outlook.com)
 
 ## Elements

@@ -5,8 +5,8 @@
 
 - **Type**: annotation
 - **Package**: `com.euonia.bus.annotation`
-- **Target**: `@Target({ElementType.TYPE, ElementType.PARAMETER})` — 可应用于类/接口或参数
-- **Retention**: `@Retention(RetentionPolicy.RUNTIME)` — 运行时保留
+- **Target**: *TYPE*, *PARAMETER* — 可应用于类/接口或参数
+- **Retention**: *RUNTIME* — 运行时保留
 - **Author**: damon(zhaorong@outlook.com)
 
 ## Elements
