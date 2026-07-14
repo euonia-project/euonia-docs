@@ -8,36 +8,48 @@
 
 ## Constructors
 
-### ObjectChangedEventArgs
+### `ObjectChangedEventArgs(Object changedObject)`
 
-- **Parameters**:
-  - `changedObject` (`Object`): 发生更改的对象
+> 使用指定的已更改对象创建 ObjectChangedEventArgs 的新实例。
 
-### ObjectChangedEventArgs
+**Parameters:**
+- `changedObject` (`Object`): 发生更改的对象
 
-- **Parameters**:
-  - `changedObject` (`Object`): 发生更改的对象
-  - `propertyChangedEvent` (`PropertyChangeEvent`): 属性变更事件
-  - `collectionChangeType` (`CollectionChangeType`): 集合变更类型
-  - `collectionIndex` (`int`): 集合索引
+### `ObjectChangedEventArgs(Object changedObject, PropertyChangeEvent propertyChangedEvent, CollectionChangeType collectionChangeType, int collectionIndex)`
+
+> 使用指定的已更改对象、属性更改事件、集合更改类型和集合索引创建 ObjectChangedEventArgs 的新实例。
+
+**Parameters:**
+- `changedObject` (`Object`): 发生更改的对象
+- `propertyChangedEvent` (`PropertyChangeEvent`): 属性变更事件
+- `collectionChangeType` (`CollectionChangeType`): 集合变更类型
+- `collectionIndex` (`int`): 集合索引
 
 ## Methods
 
-### getChangedObject
+### `getChangedObject(): Object`
 
-- **Returns**: `Object` — 发生更改的对象
+> 获取发生更改的对象。
 
-### getPropertyChangedEvent
+**Returns:** `Object` — 发生更改的对象
 
-- **Returns**: `PropertyChangeEvent` — 属性变更事件
+### `getPropertyChangedEvent(): PropertyChangeEvent`
 
-### getCollectionChangeType
+> 获取属性变更事件。
 
-- **Returns**: `CollectionChangeType` — 集合变更类型
+**Returns:** `PropertyChangeEvent` — 属性变更事件，如果没有属性变更事件则返回 null
 
-### getCollectionIndex
+### `getCollectionChangeType(): CollectionChangeType`
 
-- **Returns**: `int` — 集合索引
+> 获取集合变更类型。
+
+**Returns:** `CollectionChangeType` — 集合变更类型，如果没有集合变更则返回 null
+
+### `getCollectionIndex(): int`
+
+> 获取集合索引。
+
+**Returns:** `int` — 集合索引，如果没有集合变更则返回 -1
 
 ## Inner Enums
 

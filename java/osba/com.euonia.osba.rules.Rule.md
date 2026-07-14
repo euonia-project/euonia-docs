@@ -8,33 +8,28 @@
 
 ## Methods
 
-### getName
-
+### `getName(): String`
 > 获取规则的名称，该名称是规则的唯一标识符。该名称可用于在各种上下文中引用规则，例如在将规则应用于业务对象时或记录规则执行时。
 
-- **Returns**: `String` — 规则的名称，即规则的唯一标识符
+**Returns:** `String` — 规则的名称，即规则的唯一标识符
 
-### getProperty
-
+### `getProperty(): PropertyInfo<?>`
 > 获取与此规则关联的属性，该属性是规则设计用于评估或强制执行的主要属性。此属性是规则逻辑的主要焦点，可用于确定何时应用规则以及如何评估规则。
 
-- **Returns**: `PropertyInfo<?>` — 与此规则关联的属性，即规则设计用于评估或强制执行的主要属性
+**Returns:** `PropertyInfo<?>` — 与此规则关联的属性，即规则设计用于评估或强制执行的主要属性
 
-### getRelatedProperties
-
+### `getRelatedProperties(): List<PropertyInfo<?>>`
 > 获取与此规则关联的相关属性列表。可用于识别在评估规则时可能相关的其他属性，从而实现更复杂和相互关联的规则逻辑。
 
-- **Returns**: `List<PropertyInfo<?>>` — 与此规则关联的相关属性列表，可用于规则逻辑的评估
+**Returns:** `List<PropertyInfo<?>>` — 与此规则关联的相关属性列表，可用于规则逻辑的评估
 
-### getPriority
-
+### `getPriority(): int`
 > 获取规则的优先级，可用于确定多个规则应用时的执行顺序。优先级较高的规则将在优先级较低的规则之前执行。
 
-- **Returns**: `int` — 规则的优先级，值越高表示优先级越高
+**Returns:** `int` — 规则的优先级，值越高表示优先级越高
 
-### execute
-
+### `execute(RuleContext context): void`
 > 执行规则，根据提供的上下文执行必要的检查或操作。此方法的实现应包含评估规则的逻辑，并在规则被违反时可能修改上下文或抛出异常。
 
-- **Parameters**:
-  - `context` (`RuleContext`): 执行规则的上下文，包含规则评估的相关信息和状态
+**Parameters:**
+- `context` (`RuleContext`): 执行规则的上下文，包含规则评估的相关信息和状态

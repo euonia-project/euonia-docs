@@ -9,7 +9,7 @@
 ## Record Components
 
 | Component | Type | Description |
-|-----------|------|-------------|
-| `property` | `String` | 违反规则的属性名称 |
-| `description` | `String` | 违反规则的描述，提供有关违规的详细信息 |
-| `severity` | `RuleSeverity` | 违反规则的严重程度，指示违规的严重性级别 |
+|---|---|---|
+| `property` | `String` | 违反规则的属性名称。 |
+| `description` | `String` | 违反规则的描述，提供有关违规的详细信息。 |
+| `severity` | `RuleSeverity` | 违反规则的严重程度，指示违规的严重性级别。 |

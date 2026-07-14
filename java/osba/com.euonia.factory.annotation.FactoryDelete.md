@@ -4,16 +4,10 @@
 
 - **Type**: annotation
 - **Package**: `com.euonia.factory.annotation`
+- **Target**: `@Target(ElementType.METHOD)` — 只能应用于方法
+- **Retention**: `@Retention(RetentionPolicy.RUNTIME)` — 在运行时保留
 - **Author**: damon(zhaorong@outlook.com)
 
 ## Elements
 
-| Element | Type | Description |
-|---------|------|-------------|
-
 > 此注解不包含任何元素，仅作为标记注解使用。
-
-## Meta-Annotations
-
-- `@Target(ElementType.METHOD)` — 只能应用于方法
-- `@Retention(RetentionPolicy.RUNTIME)` — 在运行时保留

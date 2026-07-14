@@ -9,24 +9,21 @@
 
 ## Constructors
 
-### MissingMethodException
-
+### `MissingMethodException(String typeName, String methodName)`
 > 使用指定的类型名称和方法名称构造一个新的 MissingMethodException。
 
-- **Parameters**:
-  - `typeName` (`String`): 预期找到该方法的类名称
-  - `methodName` (`String`): 预期但未找到的方法名称或注解
+**Parameters:**
+- `typeName` (`String`): 预期找到该方法的类名称
+- `methodName` (`String`): 预期但未找到的方法名称或注解
 
 ## Methods
 
-### getTypeName
-
+### `getTypeName(): String`
 > 返回预期找到该方法的类名称。
 
-- **Returns**: `String` — 类名称
+**Returns:** `String` — 类名称
 
-### getMethodName
-
+### `getMethodName(): String`
 > 返回预期但未找到的方法名称或注解。
 
-- **Returns**: `String` — 方法名称或注解
+**Returns:** `String` — 方法名称或注解

@@ -10,78 +10,65 @@
 
 ## Constructors
 
-### FieldData
-
+### `FieldData()`
 > 创建一个新的 FieldData 实例。
 
-### FieldData
-
+### `FieldData(String name)`
 > 使用指定的名称创建一个新的 FieldData 实例。
 
-- **Parameters**:
-  - `name` (`String`): 字段的名称
+**Parameters:**
+- `name` (`String`): 字段的名称
 
 ## Methods
 
-### getName
-
+### `getName(): String`
 > 获取字段的名称。
 
-- **Returns**: `String` — 字段的名称
+**Returns:** `String` — 字段的名称
 
-### getValue
-
+### `getValue(): T`
 > 获取字段的当前值。
 
-- **Returns**: `T` — 字段的当前值
+**Returns:** `T` — 字段的当前值
 
-### setValue
-
+### `setValue(T value): void`
 > 设置字段的值，并将其添加到历史记录中。
 
-- **Parameters**:
-  - `value` (`T`): 要设置的新值
+**Parameters:**
+- `value` (`T`): 要设置的新值
 
-### markAsUnchanged
-
+### `markAsUnchanged(): void`
 > 将字段标记为未更改，清除历史记录。
 
-### undo
-
+### `undo(): void`
 > 撤销字段的最后一次更改。
 
-### isChanged
-
+### `isChanged(): boolean`
 > 检查字段是否已更改。
 
-- **Returns**: `boolean` — 如果字段已更改，则返回 true；否则返回 false
+**Returns:** `boolean` — 如果字段已更改，则返回 true；否则返回 false
 
-### isDeleted
-
+### `isDeleted(): boolean`
 > 检查字段是否已删除。
 
-- **Returns**: `boolean` — 如果字段已删除，则返回 true；否则返回 false
+**Returns:** `boolean` — 如果字段已删除，则返回 true；否则返回 false
 
-### isNew
-
+### `isNew(): boolean`
 > 检查字段是否为新创建的对象。
 
-- **Returns**: `boolean` — 如果字段为新创建的对象，则返回 true；否则返回 false
+**Returns:** `boolean` — 如果字段为新创建的对象，则返回 true；否则返回 false
 
-### isSavable
-
+### `isSavable(): boolean`
 > 检查字段是否可保存。
 
-- **Returns**: `boolean` — 如果字段可保存，则返回 true；否则返回 false
+**Returns:** `boolean` — 如果字段可保存，则返回 true；否则返回 false
 
-### isValid
-
+### `isValid(): boolean`
 > 检查字段是否有效。
 
-- **Returns**: `boolean` — 如果字段有效，则返回 true；否则返回 false
+**Returns:** `boolean` — 如果字段有效，则返回 true；否则返回 false
 
-### isBusy
-
+### `isBusy(): boolean`
 > 检查字段是否忙碌。
 
-- **Returns**: `boolean` — 如果字段忙碌，则返回 true；否则返回 false
+**Returns:** `boolean` — 如果字段忙碌，则返回 true；否则返回 false

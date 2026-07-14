@@ -8,15 +8,15 @@
 
 ## Methods
 
-### getBusinessContext
+### getBusinessContext(): BusinessContext
 
 > 获取当前对象的业务上下文。业务上下文包含了与当前业务操作相关的信息，如用户信息、环境信息等，可以在业务逻辑中使用这些信息来执行特定的操作或决策。
 
-- **Returns**: `BusinessContext` — 当前对象的业务上下文
+**Returns:** `BusinessContext` — 当前对象的业务上下文
 
-### setBusinessContext
+### setBusinessContext(BusinessContext businessContext): void
 
 > 设置当前对象的业务上下文。
 
-- **Parameters**:
-  - `businessContext` (`BusinessContext`): 要设置的业务上下文
+**Parameters:**
+- `businessContext` (`BusinessContext`): 要设置的业务上下文

@@ -6,38 +6,38 @@
 - **Package**: `com.euonia.reflection`
 - **Author**: damon(zhaorong@outlook.com)
 
-## Methods
+## Static Methods
 
-### getPropertyListCache
-
+### `getPropertyListCache(Type type): PropertyInfoList`
 > 获取指定类型的属性信息列表。如果列表不存在，则创建一个新的列表并缓存。
 
-- **Parameters**:
-  - `type` (`Type`): 要获取属性信息的类型
-- **Returns**: `PropertyInfoList` — 指定类型的属性信息列表
+**Parameters:**
+- `type` (`Type`): 要获取属性信息的类型
 
-### getRegisteredProperties
+**Returns:** `PropertyInfoList` — 指定类型的属性信息列表
 
+### `getRegisteredProperties(Type type): PropertyInfoList`
 > 获取指定类型的已注册属性信息列表。
 
-- **Parameters**:
-  - `type` (`Type`): 要获取已注册属性信息的类型
-- **Returns**: `PropertyInfoList` — 指定类型的已注册属性信息列表
+**Parameters:**
+- `type` (`Type`): 要获取已注册属性信息的类型
 
-### getRegisteredProperty
+**Returns:** `PropertyInfoList` — 指定类型的已注册属性信息列表
 
+### `getRegisteredProperty(Type type, String propertyName): PropertyInfo`
 > 获取指定类型和属性名称的已注册属性信息。
 
-- **Parameters**:
-  - `type` (`Type`): 要获取已注册属性信息的类型
-  - `propertyName` (`String`): 要获取已注册属性信息的属性名称
-- **Returns**: `PropertyInfo` — 指定类型和属性名称的已注册属性信息，如果不存在则返回 null
+**Parameters:**
+- `type` (`Type`): 要获取已注册属性信息的类型
+- `propertyName` (`String`): 要获取已注册属性信息的属性名称
 
-### registerProperty
+**Returns:** `PropertyInfo` — 指定类型和属性名称的已注册属性信息，如果不存在则返回 null
 
+### `registerProperty(Type type, PropertyInfo<?> propertyInfo): PropertyInfo<?>`
 > 注册一个新的属性信息。如果属性信息已存在，则返回现有的属性信息。
 
-- **Parameters**:
-  - `type` (`Type`): 要注册属性信息的类型
-  - `propertyInfo` (`PropertyInfo<?>`): 要注册的属性信息
-- **Returns**: `PropertyInfo<?>` — 注册后的属性信息，如果属性信息已存在，则返回现有的属性信息
+**Parameters:**
+- `type` (`Type`): 要注册属性信息的类型
+- `propertyInfo` (`PropertyInfo<?>`): 要注册的属性信息
+
+**Returns:** `PropertyInfo<?>` — 注册后的属性信息，如果属性信息已存在，则返回现有的属性信息

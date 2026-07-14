@@ -9,17 +9,18 @@
 
 ## Methods
 
-### saveComplete
+### saveComplete(T newObject): void
 
 > 保存对象的完整状态到数据库或其他持久化存储。
 
-- **Parameters**:
-  - `newObject` (`T`): 要保存的对象
+**Parameters:**
+- `newObject` (`T`): 要保存的对象
 
-### save
+### save(boolean forceUpdate): T
 
 > 保存对象的状态到数据库或其他持久化存储。
 
-- **Parameters**:
-  - `forceUpdate` (`boolean`): 是否强制更新
-- **Returns**: `T` — 保存后的对象
+**Parameters:**
+- `forceUpdate` (`boolean`): 是否强制更新
+
+**Returns:** `T` — 保存后的对象

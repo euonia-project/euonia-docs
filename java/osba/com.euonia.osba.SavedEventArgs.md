@@ -8,38 +8,38 @@
 
 ## Constructors
 
-### SavedEventArgs
+### `SavedEventArgs(Object newObject)`
 
 > 创建一个新的 SavedEventArgs 实例，包含保存操作的结果信息。
 
-- **Parameters**:
-  - `newObject` (`Object`): 保存操作生成的新对象
+**Parameters:**
+- `newObject` (`Object`): 保存操作生成的新对象
 
-### SavedEventArgs
+### `SavedEventArgs(Object newObject, Throwable error, Object userState)`
 
 > 创建一个新的 SavedEventArgs 实例，包含保存操作的结果信息和用户状态。
 
-- **Parameters**:
-  - `newObject` (`Object`): 保存操作生成的新对象
-  - `error` (`Throwable`): 保存操作过程中发生的错误
-  - `userState` (`Object`): 用户状态信息
+**Parameters:**
+- `newObject` (`Object`): 保存操作生成的新对象
+- `error` (`Throwable`): 保存操作过程中发生的错误
+- `userState` (`Object`): 用户状态信息
 
 ## Methods
 
-### getNewObject
+### `getNewObject(): Object`
 
 > 获取保存操作生成的新对象。
 
-- **Returns**: `Object` — 保存操作生成的新对象
+**Returns:** `Object` — 保存操作生成的新对象
 
-### getError
+### `getError(): Throwable`
 
 > 获取保存操作过程中发生的错误信息，如果没有错误则返回 null。
 
-- **Returns**: `Throwable` — 保存操作过程中发生的错误信息，如果没有错误则返回 null
+**Returns:** `Throwable` — 保存操作过程中发生的错误信息，如果没有错误则返回 null
 
-### getUserState
+### `getUserState(): Object`
 
 > 获取与保存操作相关的用户状态信息，可以用于在保存完成后执行特定的用户界面更新或其他操作。
 
-- **Returns**: `Object` — 与保存操作相关的用户状态信息
+**Returns:** `Object` — 与保存操作相关的用户状态信息

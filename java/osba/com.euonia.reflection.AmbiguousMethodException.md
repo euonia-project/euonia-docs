@@ -9,17 +9,15 @@
 
 ## Constructors
 
-### AmbiguousMethodException
-
+### `AmbiguousMethodException(String message)`
 > 使用指定的消息构造一个新的 AmbiguousMethodException。
 
-- **Parameters**:
-  - `message` (`String`): 描述方法选择过程中歧义的消息
+**Parameters:**
+- `message` (`String`): 描述方法选择过程中歧义的消息
 
-### AmbiguousMethodException
-
+### `AmbiguousMethodException(String message, Throwable cause)`
 > 使用指定的消息和原因构造一个新的 AmbiguousMethodException。
 
-- **Parameters**:
-  - `message` (`String`): 描述方法选择过程中歧义的消息
-  - `cause` (`Throwable`): 导致此异常的原因
+**Parameters:**
+- `message` (`String`): 描述方法选择过程中歧义的消息
+- `cause` (`Throwable`): 导致此异常的原因

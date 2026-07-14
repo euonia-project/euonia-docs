@@ -9,37 +9,34 @@
 
 ## Constructors
 
-### PropertyInfoList
-
+### `PropertyInfoList()`
 > 创建一个新的 PropertyInfoList 实例。
 
-### PropertyInfoList
-
+### `PropertyInfoList(List<PropertyInfo<?>> list)`
 > 使用指定的列表创建一个新的 PropertyInfoList 实例。
 
-- **Parameters**:
-  - `list` (`List<PropertyInfo<?>>`): 要包含的 PropertyInfo 对象列表
+**Parameters:**
+- `list` (`List<PropertyInfo<?>>`): 要包含的 PropertyInfo 对象列表
 
 ## Methods
 
-### isLocked
-
+### `isLocked(): boolean`
 > 判断列表是否被锁定。
 
-- **Returns**: `boolean` — 如果列表被锁定，则返回 true，否则返回 false
+**Returns:** `boolean` — 如果列表被锁定，则返回 true，否则返回 false
 
-### lock
-
+### `lock(): void`
 > 锁定列表，禁止修改。
 
-### unlock
-
+### `unlock(): void`
 > 解锁列表，允许修改。
 
-### getOrAdd
+### `getOrAdd(PropertyInfo<?> propertyInfo): PropertyInfo<?>`
+> 获取或添加 PropertyInfo 对象。
 
-> 获取或添加 PropertyInfo 对象。使用信号量保证线程安全。
+**Parameters:**
+- `propertyInfo` (`PropertyInfo<?>`): 要获取或添加的 PropertyInfo 对象
 
-- **Parameters**:
-  - `propertyInfo` (`PropertyInfo<?>`): 要获取或添加的 PropertyInfo 对象
-- **Returns**: `PropertyInfo<?>` — 已存在的 PropertyInfo 对象或新添加的 PropertyInfo 对象
+**Returns:** `PropertyInfo<?>` — 已存在的 PropertyInfo 对象或新添加的 PropertyInfo 对象
+
+**Throws:** `RuntimeException` — 当线程在尝试获取信号量时被中断
