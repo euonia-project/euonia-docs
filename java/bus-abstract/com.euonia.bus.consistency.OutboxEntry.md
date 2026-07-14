@@ -1,75 +1,86 @@
 # OutboxEntry
+
 > 代表收件箱（Outbox）中待发送的持久化消息。
 > <p>
-> 业务事务中将领域事件写入 {@link OutboxStore}，由 {@code OutboxPublisher}
+> 业务事务中将领域事件写入 `OutboxStore`，由 `OutboxPublisher`
 > 异地轮询并以至少一次的方式投递到消息总线。
+
 - **Type**: class
 - **Package**: `com.euonia.bus.consistency`
 - **Author**: damon(zhaorong@outlook.com)
 
-## Fields
-| Field | Type | Description |
-| --- | --- | --- |
-| `messageId` | `String` | 消息唯一标识符 |
-| `channel` | `String` | 消息所属通道 |
-| `messageType` | `String` | 消息类型名称 |
-| `createdAt` | `LocalDateTime` | 条目创建时间 |
-| `transports` | `List<OutboxTransport>` | 关联的传输状态列表 |
-
 ## Methods
 
-### getMessageId
-- **Returns**: `String` — -
+### `getMessageId(): String`
 
-### setMessageId
-- **Parameters**:
-  - `messageId` (`String`): -
+**Returns:** `String` — 消息唯一标识符
 
-### getChannel
-- **Returns**: `String` — -
+### `setMessageId(String messageId): void`
 
-### setChannel
-- **Parameters**:
-  - `channel` (`String`): -
+**Parameters:**
+- `messageId` (`String`): 消息唯一标识符
 
-### getMessageType
-- **Returns**: `String` — -
+### `getChannel(): String`
 
-### setMessageType
-- **Parameters**:
-  - `messageType` (`String`): -
+**Returns:** `String` — 消息所属通道
 
-### getContent
-- **Returns**: `>` — -
+### `setChannel(String channel): void`
 
-### setContent
-- **Parameters**:
-  - `content` (`MessageEnvelope<?>`): -
+**Parameters:**
+- `channel` (`String`): 消息所属通道
 
-### getCreatedAt
-- **Returns**: `LocalDateTime` — -
+### `getMessageType(): String`
 
-### setCreatedAt
-- **Parameters**:
-  - `createdAt` (`LocalDateTime`): -
+**Returns:** `String` — 消息类型名称
 
-### getTransports
-- **Returns**: `List<OutboxTransport>` — -
+### `setMessageType(String messageType): void`
 
-### setTransports
-- **Parameters**:
-  - `transports` (`List<OutboxTransport>`): -
+**Parameters:**
+- `messageType` (`String`): 消息类型名称
 
-### addTransport
+### `getContent(): MessageEnvelope<?>`
+
+**Returns:** `MessageEnvelope<?>` — 消息内容（负载）
+
+### `setContent(MessageEnvelope<?> content): void`
+
+**Parameters:**
+- `content` (`MessageEnvelope<?>`): 消息内容（负载）
+
+### `getCreatedAt(): LocalDateTime`
+
+**Returns:** `LocalDateTime` — 条目创建时间
+
+### `setCreatedAt(LocalDateTime createdAt): void`
+
+**Parameters:**
+- `createdAt` (`LocalDateTime`): 条目创建时间
+
+### `getTransports(): List<OutboxTransport>`
+
+**Returns:** `List<OutboxTransport>` — 关联的传输状态列表
+
+### `setTransports(List<OutboxTransport> transports): void`
+
+**Parameters:**
+- `transports` (`List<OutboxTransport>`): 关联的传输状态列表
+
+### `addTransport(OutboxTransport transport): void`
+
 > 添加一条传输状态记录。
-- **Parameters**:
-  - `transport` (`OutboxTransport`): 传输状态
 
-### addTransports
+**Parameters:**
+- `transport` (`OutboxTransport`): 传输状态
+
+### `addTransports(String transport): void`
+
 > 按传输名称添加传输记录（当前为空实现）。
-- **Parameters**:
-  - `transport` (`String`): 传输名称
 
-### toString
+**Parameters:**
+- `transport` (`String`): 传输名称
+
+### `toString(): String`
+
 > 返回投递箱条目的字符串表示。
-- **Returns**: `String` — 格式为 {@code OutboxMessage{messageId=xxx, channel=xxx}} 的字符串
+
+**Returns:** `String` — 格式为 `OutboxMessage{messageId=xxx, channel=xxx}` 的字符串

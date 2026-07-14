@@ -6,46 +6,43 @@
 - **Package**: `com.euonia.bus.dlq`
 - **Author**: damon(zhaorong@outlook.com)
 
-## Fields
+## Constructors
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `originalMessage` | `MessageEnvelope<T>` | 原始消息 |
-| `reason` | `String` | 失败原因 |
-| `exceptionType` | `String` | 异常类型名称 |
-| `exceptionMessage` | `String` | 异常详细信息 |
-| `timestamp` | `long` | 移入死信队列的时间 |
+### `DeadLetterMessage(MessageEnvelope<T> originalMessage, Throwable error)`
+> 构造方法，创建一个新的死信消息实例。
+
+**Parameters:**
+- `originalMessage` (`MessageEnvelope<T>`): 原始消息
+- `error` (`Throwable`): 异常信息
 
 ## Methods
 
-### DeadLetterMessage
-
-> 构造方法，创建一个新的死信消息实例。
-
-- **Parameters**:
-  - `originalMessage` (`MessageEnvelope<T>`): 原始消息
-  - `error` (`Throwable`): 异常信息
-
-### getOriginalMessage
-
+### `getOriginalMessage(): MessageEnvelope<T>`
 > 获取原始消息。
 
-- **Returns**: `MessageEnvelope<T>` - 原始消息
+**Returns:** `MessageEnvelope<T>` — 原始消息
 
-### getReason
-
+### `getReason(): String`
 > 获取失败原因。
 
-- **Returns**: `String` - 失败原因
+**Returns:** `String` — 失败原因
 
-### getExceptionType
-
+### `getExceptionType(): String`
 > 获取异常类型名称。
 
-- **Returns**: `String` - 异常类型名称
+**Returns:** `String` — 异常类型名称
 
-### getExceptionMessage
-
+### `getExceptionMessage(): String`
 > 获取异常详细信息。
 
-- **Returns**: `String` - 异常详细信息
+**Returns:** `String` — 异常详细信息
+
+### `getTimestamp(): long`
+> 获取移入死信队列的时间戳。
+
+**Returns:** `long` — 时间戳
+
+### `toString(): String`
+> 返回死信消息的字符串表示，包含消息ID、失败原因和时间戳。
+
+**Returns:** `String` — 字符串表示

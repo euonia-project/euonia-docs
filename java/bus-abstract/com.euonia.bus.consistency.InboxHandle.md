@@ -1,68 +1,81 @@
 # InboxHandle
+
 > 收件箱（Inbox）消息的处理状态记录，跟踪每条消息被各处理器消费的执行状态。
 > <p>
 > 用于实现幂等消费，确保同一条消息不会被重复处理。
-> 状态由内部枚举 {@link Status} 定义。
+> 状态由内部枚举 `Status` 定义。
+
 - **Type**: class
 - **Package**: `com.euonia.bus.consistency`
 - **Author**: damon(zhaorong@outlook.com)
 
-## Fields
-| Field | Type | Description |
-| --- | --- | --- |
-| `messageId` | `String` | 关联的消息 ID |
-| `handler` | `String` | 处理器的标识名称 |
-| `status` | `int` | 处理状态（0=待处理, 1=成功, 2=失败） |
-| `retryAttempts` | `int` | 已重试次数 |
-| `error` | `String` | 最近一次错误信息 |
-| `value` | `int` | - |
-
 ## Methods
 
-### getMessageId
-- **Returns**: `String` — -
+### `getMessageId(): String`
 
-### setMessageId
-- **Parameters**:
-  - `messageId` (`String`): -
+**Returns:** `String` — 关联的消息 ID
 
-### getHandler
-- **Returns**: `String` — -
+### `setMessageId(String messageId): void`
 
-### setHandler
-- **Parameters**:
-  - `handler` (`String`): -
+**Parameters:**
+- `messageId` (`String`): 关联的消息 ID
 
-### getStatus
-- **Returns**: `int` — -
+### `getHandler(): String`
 
-### setStatus
-- **Parameters**:
-  - `status` (`int`): -
+**Returns:** `String` — 处理器的标识名称
 
-### getRetryAttempts
-- **Returns**: `int` — -
+### `setHandler(String handler): void`
 
-### setRetryAttempts
-- **Parameters**:
-  - `retryAttempts` (`int`): -
+**Parameters:**
+- `handler` (`String`): 处理器的标识名称
 
-### getError
-- **Returns**: `String` — -
+### `getStatus(): int`
 
-### setError
-- **Parameters**:
-  - `error` (`String`): -
+**Returns:** `int` — 处理状态（0=待处理, 1=成功, 2=失败）
 
-### PENDING
+### `setStatus(int status): void`
+
+**Parameters:**
+- `status` (`int`): 处理状态（0=待处理, 1=成功, 2=失败）
+
+### `getRetryAttempts(): int`
+
+**Returns:** `int` — 已重试次数
+
+### `setRetryAttempts(int retryAttempts): void`
+
+**Parameters:**
+- `retryAttempts` (`int`): 已重试次数
+
+### `getError(): String`
+
+**Returns:** `String` — 最近一次错误信息
+
+### `setError(String error): void`
+
+**Parameters:**
+- `error` (`String`): 最近一次错误信息
+
+## Inner Types
+
+### `Status` (enum)
+
+> 处理状态枚举。
+
+#### `PENDING`
+
 > 待处理
-- **Parameters**:
-  - `0` (``): -
 
-### Status
-- **Parameters**:
-  - `value` (`int`): -
+#### `SUCCESS`
 
-### getValue
+> 处理成功
+
+#### `FAILED`
+
+> 处理失败
+
+#### `getValue(): int`
+
 > 获取状态对应的整数值。
-- **Returns**: `int` — 状态值
+
+**Returns:** `int` — 状态值

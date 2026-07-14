@@ -165,6 +165,7 @@ public class GetOrderQuery { ... }
 | `MessageDeliverException` | 消息投递失败 |
 | `MessageProcessingException` | 消息处理失败 |
 | `MessageTransportException` | 传输层错误 |
+| `MessagePersistentException` | 消息持久化失败 |
 | `MessageTypeException` | 无效/未分类的消息类型 |
 
 ### @Subscribe — 消息处理器标记
@@ -305,10 +306,9 @@ boolean isRequest = convention.isRequest("queries");     // true
 | `com.euonia.bus` | 11 | 核心抽象：传输、分发、上下文、信封 |
 | `com.euonia.bus.message` | 4 | 消息分类标记接口 |
 | `com.euonia.bus.event` | 8 | 消息处理事件体系 |
-| `com.euonia.bus.exception` | 6 | 异常层次 |
+| `com.euonia.bus.exception` | 7 | 异常层次 |
 | `com.euonia.bus.recipient` | 5 | 消息接收者角色 |
-| `com.euonia.bus.inbox` | 3 | 收件箱模式抽象 |
-| `com.euonia.bus.outbox` | 3 | 发件箱模式抽象 |
+| `com.euonia.bus.consistency` | 6 | 收件箱/发件箱模式抽象 |
 | `com.euonia.bus.dlq` | 1 | 死信队列 |
 | `com.euonia.bus.serialization` | 1 | 序列化契约 |
 

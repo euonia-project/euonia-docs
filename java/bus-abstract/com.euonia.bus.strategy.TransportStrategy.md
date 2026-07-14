@@ -1,32 +1,32 @@
 # TransportStrategy
 
-> Defines the contract for a transport strategy, which determines how messages are handled for outgoing and incoming operations.
+> 定义传输策略的契约，该策略决定了消息在出站和入站操作中的处理方式。
 
 - **Type**: interface
 - **Package**: `com.euonia.bus.strategy`
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 
-### getName
+### `getName(): String`
+> 获取传输策略的名称。
 
-> Gets the name of the transport strategy.
+**Returns:** `String` — 传输策略的名称
 
-- **Returns**: `String` - the name of the transport strategy
+### `allowOutgoing(String channel, Class<?> messageType): boolean`
+> 判断传输策略是否允许在指定通道上发送出站消息。
 
-### allowOutgoing
+**Parameters:**
+- `channel` (`String`): 通道名称
+- `messageType` (`Class<?>`): 消息类型
 
-> Determines if the transport strategy allows outgoing messages on the specified channel.
+**Returns:** `boolean` — 如果传输策略允许在指定通道上发送出站消息则返回 true，否则返回 false
 
-- **Parameters**:
-  - `channel` (`String`): the channel name
-  - `messageType` (`Class<?>`): the type of the message
-- **Returns**: `boolean` - true if the transport strategy allows outgoing messages on the specified channel, false otherwise
+### `allowIncoming(String channel, Class<?> messageType): boolean`
+> 判断传输策略是否允许在指定通道上接收入站消息。
 
-### allowIncoming
+**Parameters:**
+- `channel` (`String`): 通道名称
+- `messageType` (`Class<?>`): 消息类型
 
-> Determines if the transport strategy allows incoming messages on the specified channel.
-
-- **Parameters**:
-  - `channel` (`String`): the channel name
-  - `messageType` (`Class<?>`): the type of the message
-- **Returns**: `boolean` - true if the transport strategy allows incoming messages on the specified channel, false otherwise
+**Returns:** `boolean` — 如果传输策略允许在指定通道上接收入站消息则返回 true，否则返回 false

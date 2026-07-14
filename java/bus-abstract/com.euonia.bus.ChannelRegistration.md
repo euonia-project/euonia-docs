@@ -1,38 +1,42 @@
 # ChannelRegistration
 
-> ChannelRegistration represents the registration of a message handler for a specific channel and message type.
+> `ChannelRegistration` 表示特定通道和消息类型的处理器注册信息。
+>
+> 包含消息类型和对应的处理器列表，支持通过 `addHandler(ChannelHandler)`
+> 方法以流式方式添加处理器。
 
 - **Type**: class
 - **Package**: `com.euonia.bus`
+- **Author**: damon(zhaorong@outlook.com)
 
-## Fields
+## Constructors
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `messageType` | `Class<?>` | The message type this registration handles. |
-| `handlers` | `List<ChannelHandler>` | The list of registered handlers. |
+### `ChannelRegistration(Class<?> messageType)`
+
+> 使用指定的消息类型构造通道注册信息。
+
+**Parameters:**
+- `messageType` (`Class<?>`): 消息类型
 
 ## Methods
 
-### ChannelRegistration
+### `getMessageType(): Class<?>`
 
-> Constructs a new ChannelRegistration for the given message type.
+> 获取消息类型。
 
-- **Parameters**:
-  - `messageType` (`Class<?>`): the message type
+**Returns:** `Class<?>` — 消息类型
 
-### getMessageType
+### `getHandlers(): List<ChannelHandler>`
 
-- **Returns**: `Class<?>` - the message type
+> 获取处理器列表的不可修改视图。
 
-### getHandlers
+**Returns:** `List<ChannelHandler>` — 处理器列表
 
-- **Returns**: `List<ChannelHandler>` - an unmodifiable list of registered handlers
+### `addHandler(ChannelHandler handler): ChannelRegistration`
 
-### addHandler
+> 添加处理器并返回当前实例以支持链式调用。
 
-> Adds a handler to this registration.
+**Parameters:**
+- `handler` (`ChannelHandler`): 要添加的处理器
 
-- **Parameters**:
-  - `handler` (`ChannelHandler`): the handler to add
-- **Returns**: `ChannelRegistration` - this instance, for chaining
+**Returns:** `ChannelRegistration` — 当前 ChannelRegistration 实例

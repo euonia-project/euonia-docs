@@ -1,53 +1,74 @@
 # InboxStore
+
 > 收件箱（Inbox）持久化接口，用于消息去重（幂等性）。
+
 - **Type**: interface
 - **Package**: `com.euonia.bus.consistency`
 - **Author**: damon(zhaorong@outlook.com)
 
 ## Methods
 
-### insert
-> 插入一条消息到收件箱。
-- **Parameters**:
-  - `channel` (`String`): 消息通道
-  - `message` (`MessageEnvelope<T>`): 消息内容
-  - `handlers` (`List<String>`): 处理器列表
-- **Returns**: `boolean` — 插入是否成功
+### `insert(String channel, MessageEnvelope<T> message, List<String> handlers): boolean`
 
-### insert
 > 插入一条消息到收件箱。
-- **Parameters**:
-  - `entry` (`InboxEntry`): 消息条目
-- **Returns**: `boolean` — 插入是否成功
 
-### markAsSuccess
+**Parameters:**
+- `channel` (`String`): 消息通道
+- `message` (`MessageEnvelope<T>`): 消息内容
+- `handlers` (`List<String>`): 处理器列表
+
+**Returns:** `boolean` — 插入是否成功
+
+### `insert(InboxEntry entry): boolean`
+
+> 插入一条消息到收件箱。
+
+**Parameters:**
+- `entry` (`InboxEntry`): 消息条目
+
+**Returns:** `boolean` — 插入是否成功
+
+### `markAsSuccess(String messageId, String handler): void`
+
 > 标记消息处理成功。
-- **Parameters**:
-  - `messageId` (`String`): 消息ID
-  - `handler` (`String`): 处理器
 
-### markAsFailed
+**Parameters:**
+- `messageId` (`String`): 消息ID
+- `handler` (`String`): 处理器
+
+### `markAsFailed(String messageId, String handler, String errorMessage): void`
+
 > 标记消息处理失败。
-- **Parameters**:
-  - `messageId` (`String`): 消息ID
-  - `handler` (`String`): 处理器
-  - `errorMessage` (`String`): 错误信息
 
-### get
+**Parameters:**
+- `messageId` (`String`): 消息ID
+- `handler` (`String`): 处理器
+- `errorMessage` (`String`): 错误信息
+
+### `get(String messageId): InboxEntry`
+
 > 获取收件箱条目。
-- **Parameters**:
-  - `messageId` (`String`): 消息ID
-- **Returns**: `InboxEntry` — 收件箱条目
 
-### getAndCache
+**Parameters:**
+- `messageId` (`String`): 消息ID
+
+**Returns:** `InboxEntry` — 收件箱条目
+
+### `getAndCache(String messageId): InboxEntry`
+
 > 获取收件箱条目并缓存。
-- **Parameters**:
-  - `messageId` (`String`): 消息ID
-- **Returns**: `InboxEntry` — 收件箱条目
 
-### clearCache
+**Parameters:**
+- `messageId` (`String`): 消息ID
+
+**Returns:** `InboxEntry` — 收件箱条目
+
+### `clearCache(): void`
+
 > 清除缓存。
 
-### getFailedMessages
+### `getFailedMessages(): List<InboxHandle>`
+
 > 获取处理失败的消息列表。
-- **Returns**: `List<InboxHandle>` — 处理失败的消息列表
+
+**Returns:** `List<InboxHandle>` — 处理失败的消息列表

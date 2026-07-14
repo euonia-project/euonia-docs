@@ -7,130 +7,133 @@
 - **Type**: interface
 - **Package**: `com.euonia.bus`
 - **Author**: damon(zhaorong@outlook.com)
+- **Extends**: `AutoCloseable`
 
 ## Methods
 
-### getMessage
+### `getMessage(): Object`
 
 > 获取当前消息对象。
 
-- **Returns**: `Object` - 消息对象
+**Returns:** `Object` — 消息对象
 
-### getMessageId
+### `getMessageId(): String`
 
 > 获取消息唯一标识。
 
-- **Returns**: `String` - 消息 ID
+**Returns:** `String` — 消息 ID
 
-### setMessageId
+### `setMessageId(String messageId): void`
 
 > 设置消息唯一标识。
 
-- **Parameters**:
-  - `messageId` (`String`): 消息 ID
+**Parameters:**
+- `messageId` (`String`): 消息 ID
 
-### getCorrelationId
+### `getCorrelationId(): String`
 
 > 获取关联标识，用于将相关消息关联在一起。
 
-- **Returns**: `String` - 关联 ID
+**Returns:** `String` — 关联 ID
 
-### setCorrelationId
+### `setCorrelationId(String correlationId): void`
 
 > 设置关联标识。
 
-- **Parameters**:
-  - `correlationId` (`String`): 关联 ID
+**Parameters:**
+- `correlationId` (`String`): 关联 ID
 
-### getConversationId
+### `getConversationId(): String`
 
 > 获取会话标识，用于标识一组相关的消息对话。
 
-- **Returns**: `String` - 会话 ID
+**Returns:** `String` — 会话 ID
 
-### setConversationId
+### `setConversationId(String conversationId): void`
 
 > 设置会话标识。
 
-- **Parameters**:
-  - `conversationId` (`String`): 会话 ID
+**Parameters:**
+- `conversationId` (`String`): 会话 ID
 
-### getRequestTraceId
+### `getRequestTraceId(): String`
 
 > 获取请求追踪标识，用于分布式链路追踪。
 
-- **Returns**: `String` - 请求追踪 ID
+**Returns:** `String` — 请求追踪 ID
 
-### setRequestTraceId
+### `setRequestTraceId(String requestTraceId): void`
 
 > 设置请求追踪标识。
 
-- **Parameters**:
-  - `requestTraceId` (`String`): 请求追踪 ID
+**Parameters:**
+- `requestTraceId` (`String`): 请求追踪 ID
 
-### getAuthorization
+### `getAuthorization(): String`
 
 > 获取授权信息（如 Bearer token）。
 
-- **Returns**: `String` - 授权字符串
+**Returns:** `String` — 授权字符串
 
-### setAuthorization
+### `setAuthorization(String authorization): void`
 
 > 设置授权信息。
 
-- **Parameters**:
-  - `authorization` (`String`): 授权字符串
+**Parameters:**
+- `authorization` (`String`): 授权字符串
 
-### getUser
+### `getUser(): UserPrincipal`
 
 > 获取当前用户主体信息。
 
-- **Returns**: `UserPrincipal` - 用户主体，可能为 `null`
+**Returns:** `UserPrincipal` — 用户主体，可能为 `null`
 
-### getHeaders
+### `getHeaders(): Map<String, String>`
 
 > 获取消息头字典。
 
-- **Returns**: `Map<String, String>` - 包含所有消息头的不可变映射
+**Returns:** `Map<String, String>` — 包含所有消息头的不可变映射
 
-### getMetadata
+### `getMetadata(): MessageMetadata`
 
 > 获取消息元数据。
 
-- **Returns**: `MessageMetadata` - 消息元数据，可能为 `null`
+**Returns:** `MessageMetadata` — 消息元数据，可能为 `null`
 
-### setMetadata
+### `setMetadata(MessageMetadata metadata): void`
 
 > 设置消息元数据。
 
-- **Parameters**:
-  - `metadata` (`MessageMetadata`): 消息元数据
+**Parameters:**
+- `metadata` (`MessageMetadata`): 消息元数据
 
-### response
+### `response(R message): void`
 
 > 发送响应消息。
 
-- **Parameters**:
-  - `message` (`R`): 响应消息
+**Type Parameters:** `<R>` — 响应消息类型
 
-### failure
+**Parameters:**
+- `message` (`R`): 响应消息
+
+### `failure(Throwable throwable): void`
 
 > 通知消息处理失败。
 
-- **Parameters**:
-  - `throwable` (`Throwable`): 处理过程中抛出的异常
+**Parameters:**
+- `throwable` (`Throwable`): 处理过程中抛出的异常
 
-### complete
+### `complete(Object message): void`
 
 > 完成消息处理并发送最终响应。
 
-- **Parameters**:
-  - `message` (`Object`): 响应消息
+**Parameters:**
+- `message` (`Object`): 响应消息
 
-### complete
+### `complete(Object message, Class<?> handlerType): void`
 
 > 完成消息处理并发送最终响应，同时指定处理器类型。
 
-- **Parameters**:
-  - `message` (`Object`): 响应消息
-  - `handlerType` (`Class<?>`): 处理器类型
+**Parameters:**
+- `message` (`Object`): 响应消息
+- `handlerType` (`Class<?>`): 处理器类型
