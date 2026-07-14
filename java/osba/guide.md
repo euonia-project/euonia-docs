@@ -416,61 +416,113 @@ objectFactory.delete(existing);
 
 ### ObservableObject\<T\>
 
-> `abstract class` — 可观察的业务对象，追踪编辑状态和忙碌状态。实现了 `TrackableObject` 接口，并通过 `SubmissionPublisher` 提供异步通知。
+> `abstract class` extends `BusinessObject<T>` — 可观察的业务对象，追踪编辑状态和忙碌状态。实现了 `TrackableObject` 和 `OperableProperty` 接口。
 
-| 字段 | 类型 | 描述 |
-|------|------|------|
-| `editState` | `ObjectEditState` | 当前对象的编辑状态（NONE, NEW, CHANGED, DELETED） |
+#### getState() → ObjectEditState
 
-#### getEditState() → ObjectEditState
+获取当前编辑状态（NONE, NEW, CHANGED, DELETED）。
 
-获取当前编辑状态。
+#### isNew() → boolean
 
-#### setEditState(ObjectEditState state)
+检查对象是否为新建状态。
 
-设置编辑状态。
+#### isChanged() → boolean
+
+检查对象是否已被修改。
+
+#### isDeleted() → boolean
+
+检查对象是否已被标记为删除。
+
+#### isCheckObjectRulesOnDelete() → boolean
+
+检查在删除时是否需要检查对象规则。
+
+#### markAsNew()
+
+将对象标记为新建。
+
+#### markAsChanged()
+
+将对象标记为已修改。
+
+#### markAsDeleted()
+
+将对象标记为删除。
+
+#### markAsDeleted(boolean checkObjectRules)
+
+将对象标记为删除，可选是否在删除时检查规则。
 
 #### isBusy() → boolean
 
-检查对象是否处于忙碌状态（有挂起的异步操作）。
+检查对象是否处于忙碌状态（有挂起的异步操作）。同时检查对象自身的忙碌状态及关联字段和规则的忙碌状态。
 
-#### beginBusy()
+#### isSelfBusy() → boolean
 
-增加忙碌计数器，进入忙碌状态。
+仅检查对象自身是否忙碌。
 
-#### endBusy()
+#### isSavable() → boolean
 
-减少忙碌计数器，可能的退出忙碌状态。
+检查对象是否可保存（有效、有变更且不忙碌）。
 
-#### subscribe(Subscriber\<ObjectChangedEventArgs\> subscriber)
+#### onBusyChanged(Consumer\<Boolean\> listener)
 
-订阅对象变更通知。
+订阅忙碌状态变更通知。
+
+#### addBusyChangedListener(Consumer\<Boolean\> listener)
+
+添加忙碌状态变更监听器。
+
+#### removeBusyChangedListener(Consumer\<Boolean\> listener)
+
+移除忙碌状态变更监听器。
+
+#### getProperty(PropertyInfo\<V\> property) → V
+
+获取属性值，遵循对象规则和权限。
+
+#### setProperty(PropertyInfo\<V\> property, V value)
+
+设置属性值，遵循对象规则和权限。
 
 ---
 
 ### EditableObject\<T\>
 
-> `abstract class` `implements Savable<T>` — 可编辑的业务对象，可保存到数据库或其他持久化存储。扩展 `ObservableObject`，在保存前自动进行规则检查。
+> `abstract class` extends `ObservableObject<T>`, `implements Savable<T>` — 可编辑的业务对象，可保存到数据库或其他持久化存储。在保存前自动进行规则检查，验证失败则抛出 `RuleCheckException`。
 
-#### save(boolean forceUpdate) → CompletableFuture\<T\>
+#### save(boolean forceUpdate) → T
 
-异步保存对象。在持久化之前进行规则检查，验证失败则返回包含异常的 Future。
+保存对象。在持久化之前进行规则检查，验证失败则抛出 RuleCheckException。
 
 - **Parameters**:
   - `forceUpdate` (`boolean`): 若为 true 则忽略变更检查强制保存
-- **Returns**: `CompletableFuture<T>` — 保存完成后的对象
+- **Returns**: `T` — 保存后的对象
 
-#### saveComplete(T result)
+#### saveComplete(T newObject)
 
-保存完成后的回调钩子。
+保存完成后的回调钩子，触发 onSaved 事件通知所有订阅的监听器。
 
-#### delete() → CompletableFuture\<T\>
+#### onSaved(Consumer\<SavedEventArgs\> listener)
 
-异步删除当前对象。
+订阅 onSaved 事件的监听器，在对象保存时触发。
 
-#### markDeleted()
+#### create()
 
-将对象标记为已删除。
+预定义的 create 方法，子类可覆盖以实现对象创建逻辑。
+
+#### insert()
+
+预定义的 insert 方法，子类可覆盖以实现插入持久化存储的逻辑。
+
+#### update()
+
+预定义的 update 方法，子类可覆盖以实现更新持久化存储的逻辑。
+
+#### delete()
+
+预定义的 delete 方法，子类可覆盖以实现从持久化存储删除的逻辑。
 
 ---
 
@@ -482,15 +534,15 @@ objectFactory.delete(existing);
 
 ### ExecutableObject\<T\>
 
-> `abstract class` — 可执行的业务对象。提供 `execute()` 和 `create()` 方法，适用于操作型对象。
+> `abstract class` extends `BusinessObject<T>` — 可执行的业务对象。提供 `execute()` 和 `create()` 方法，适用于操作型对象。子类可重写这些方法提供特定行为。
 
-#### execute() → CompletableFuture\<T\>
+#### execute()
 
-执行当前对象所代表的操作。
+执行当前对象所代表的操作。默认实现为空，可由子类重写。
 
-#### create() → CompletableFuture\<T\>
+#### create()
 
-创建并初始化一个新的可执行对象实例。
+创建对象的操作。默认实现为空，可由子类重写。
 
 ---
 
@@ -502,27 +554,32 @@ objectFactory.delete(existing);
 
 | 方法 | 描述 |
 |------|------|
-| `executeAsync(RuleContext) → CompletableFuture<Void>` | 异步执行规则的验证逻辑 |
-| `getPriority() → int` | 获取规则优先级（数值越小优先级越高） |
+| `execute(RuleContext)` | 执行规则的验证逻辑 |
+| `getPriority() → int` | 获取规则优先级（数值越高优先级越高） |
+| `getName() → String` | 获取规则名称（唯一标识符） |
 | `getProperty() → PropertyInfo<?>` | 获取此规则关联的属性 |
+| `getRelatedProperties() → List<PropertyInfo<?>>` | 获取与此规则关联的相关属性列表 |
 
 #### RuleBase
 
-> `abstract class` — 规则的抽象基类，提供属性和优先级的基本实现。
+> `abstract class` `implements Rule` — 规则的抽象基类，提供属性管理和基于类型与属性名称自动生成规则名称的功能。
 
-- **Fields**: `property` (PropertyInfo<?>), `priority` (int)
-- **Constructors**: `RuleBase(PropertyInfo<?>)`, `RuleBase(PropertyInfo<?>, int)`
+- **Fields**: `name` (String), `property` (PropertyInfo<?>)
+- **Constructors**: `RuleBase()`, `RuleBase(PropertyInfo<?>)`, `RuleBase(PropertyInfo<?>, Member)`, `RuleBase(PropertyInfo<?>, String...)`
 
 #### Rules
 
-> `class` — 管理 `RuleManager` 实例的规则执行器。提供异步执行和管理规则列表的方法，所有规则操作均基于 `CompletableFuture` 实现非阻塞处理。
+> `class` — 实例级规则执行器，负责管理业务对象的验证规则执行、跟踪已违反的规则并在验证完成时通知监听器。
 
 | 方法 | 描述 |
 |------|------|
 | `addRule(Rule)` | 添加一个规则到当前集合 |
-| `checkRulesAsync() → CompletableFuture<Boolean>` | 异步执行所有规则，返回验证是否全部通过 |
+| `checkObjectRules() → List<String>` | 执行所有规则，返回受影响的属性名称列表 |
 | `getBrokenRules() → BrokenRuleCollection` | 获取所有已损坏的规则 |
-| `clearRules()` | 清除所有规则 |
+| `isValid() → boolean` | 基于当前已违反的规则集合判断目标对象是否有效 |
+| `hasRunningRules() → boolean` | 检查是否有正在执行的规则 |
+| `suppressRuleChecking(boolean)` | 设置是否抑制规则检查 |
+| `addDataAnnotationRules()` | 自动扫描并添加基于数据注解的验证规则 |
 
 #### RuleManager
 
@@ -538,10 +595,11 @@ objectFactory.delete(existing);
 
 #### LambdaRule
 
-> `class` — 基于 Lambda 表达式的规则，快速定义内联验证逻辑。
+> `class` `extends RuleBase` — 基于 Lambda 表达式的规则，快速定义内联验证逻辑。提供链式 API：`LambdaRule.of(property).check(function).message(message)`。
 
-- **Constructor**: `LambdaRule(PropertyInfo<T>, BiConsumer<T, RuleContext>)` — 不带 message
-- **Constructor**: `LambdaRule(PropertyInfo<T>, BiConsumer<T, RuleContext>, String)` — 带自定义 message
+- **Constructor**: `LambdaRule(PropertyInfo<T>)` — 仅绑定属性
+- **Constructor**: `LambdaRule(PropertyInfo<T>, BiFunction<T, RuleContext, Boolean>, String)` — 带验证函数和错误消息
+- **Constructor**: `LambdaRule(PropertyInfo<T>, BiFunction<T, RuleContext, Boolean>, Function<T, String>)` — 带验证函数和消息工厂
 
 #### DataAnnotationRule
 
@@ -549,7 +607,7 @@ objectFactory.delete(existing);
 
 #### BrokenRule
 
-> `class` — 表示一个已损坏的规则，包含违规详情。
+> `record` — 表示一个已损坏的规则，包含违规详情。
 
 | 字段 | 类型 | 描述 |
 |------|------|------|
@@ -559,37 +617,46 @@ objectFactory.delete(existing);
 
 #### BrokenRuleCollection
 
-> `class` `extends ArrayList<BrokenRule>` — 跟踪和分类错误、警告和信息级别的违规。
+> `class` — 线程安全的已破坏规则集合，跟踪和分类错误、警告和信息级别的违规。
 
 | 方法 | 描述 |
 |------|------|
-| `getErrors() → List<BrokenRule>` | 获取所有 Error 级别的违规 |
-| `getWarnings() → List<BrokenRule>` | 获取所有 Warning 级别的违规 |
-| `getInfos() → List<BrokenRule>` | 获取所有 Information 级别的违规 |
-| `hasErrors() → boolean` | 是否有 Error 级别违规 |
-| `addError(String, String)` | 添加一个 Error 级别违规 |
+| `getErrorCount() → int` | 获取 Error 级别的违规数量 |
+| `getWarningCount() → int` | 获取 Warning 级别的违规数量 |
+| `getInformationCount() → int` | 获取 Information 级别的违规数量 |
+| `isEmpty() → boolean` | 检查集合是否为空 |
+| `list() → List<BrokenRule>` | 获取所有已破坏规则（不可修改列表） |
+| `stream() → Stream<BrokenRule>` | 获取已破坏规则的流 |
+| `add(List<RuleResult>, String)` | 根据规则结果和属性名添加已破坏规则 |
+| `clearRules()` | 清除所有已破坏规则 |
+| `clearRules(String)` | 清除与指定属性关联的已破坏规则 |
 
 #### RuleContext
 
-> `class` — 规则执行上下文，在验证期间传递给规则。
+> `class` — 规则执行上下文，在验证期间传递给规则，承载目标对象、当前规则、属性名和执行结果。
 
 | 方法 | 描述 |
 |------|------|
 | `getTarget() → Object` | 获取被验证的目标对象 |
+| `getRule() → Rule` | 获取当前正在执行的规则 |
+| `getPropertyName() → String` | 获取当前正在校验的属性名 |
 | `addErrorResult(String)` | 添加一个 Error 级别结果 |
 | `addWarningResult(String)` | 添加一个 Warning 级别结果 |
-| `addInfoResult(String)` | 添加一个 Information 级别结果 |
-| `getBrokenRules() → BrokenRuleCollection` | 获取所有已收集的违规 |
+| `addInformationResult(String)` | 添加一个 Information 级别结果 |
+| `addSuccessResult()` | 添加一个成功结果 |
+| `getResults() → List<RuleResult>` | 获取规则执行的结果列表（不可修改） |
+| `complete()` | 完成规则执行，若结果为空则自动添加成功结果 |
 
 #### RuleSeverity
 
-> `enum` — 规则严重程度枚举。
+> `enum` — 规则严重程度枚举，用于对规则评估过程中发现的问题进行分类和优先级排序。
 
 | 值 | 描述 |
 |----|------|
-| `Error` | 错误级别，阻止保存 |
-| `Warning` | 警告级别，不阻止但需关注 |
-| `Information` | 信息级别，仅供记录 |
+| `ERROR` | 错误级别，表示必须立即处理的严重问题 |
+| `WARNING` | 警告级别，表示应当处理但不严重的问题 |
+| `INFORMATION` | 信息级别，表示无需立即处理的信息性消息 |
+| `SUCCESS` | 成功级别，表示操作或验证成功 |
 
 ---
 
@@ -610,7 +677,7 @@ objectFactory.delete(existing);
 
 #### ObjectFactory
 
-> `class` — `BusinessObjectFactory` 的便捷包装，提供简化的创建和执行方法。
+> `interface` — 对象工厂接口，定义了业务对象的创建、检索、更新、保存、执行和删除方法的标准契约。`BusinessObjectFactory` 是其基于反射的实现。
 
 #### 工厂注解
 
