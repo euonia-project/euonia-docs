@@ -69,6 +69,6 @@
   - `delayMillis` (`long`): 延迟发送时间（毫秒）
 - **Returns**: `CallBuilder<T, R>` - 当前实例
 
-### runAsync
+### executeAsync
 > 执行请求。
 - **Returns**: `CompletableFuture<R>` - 在收到响应时完成并携带响应结果的 future

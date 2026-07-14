@@ -76,6 +76,6 @@
   - `delayMillis` (`long`): 延迟发送时间（毫秒）
 - **Returns**: `SendBuilder<T, R>` - 当前实例
 
-### runAsync
+### executeAsync
 > 执行发送。
 - **Returns**: `CompletableFuture<Void>` - 在消息处理完毕时完成的 future

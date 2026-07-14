@@ -61,6 +61,6 @@
   - `delayMillis` (`long`): 延迟发送时间（毫秒）
 - **Returns**: `PublishBuilder<T>` - 当前实例
 
-### runAsync
+### executeAsync
 > 执行发布。
 - **Returns**: `CompletableFuture<Void>` - 在所有传输实例完成发送后完成的 future
