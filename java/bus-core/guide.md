@@ -189,20 +189,20 @@ ExtendableOptions (抽象基类)
 ```java
 // 发布
 bus.publish(message)
-    .toChannel("orders")
+    .withChannel("orders")
     .withQueue("high-priority")
     .executeAsync();
 
 // 发送
 bus.send(message)
-    .toChannel("orders")
+    .withChannel("orders")
     .withCorrelationId("corr-123")
     .pipeTo(subscriber)
     .executeAsync();
 
 // 调用（请求-响应）
 bus.call(request)
-    .toChannel("orders")
+    .withChannel("orders")
     .executeAsync()
     .thenAccept(response -> { ... });
 ```
@@ -265,6 +265,14 @@ import com.euonia.bus.Handler;
 public class CreateOrderCommand implements Unicast {
     private String productId;
     private int quantity;
+
+    public CreateOrderCommand() {}
+
+    public CreateOrderCommand(String productId, int quantity) {
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+
     // getters/setters...
 }
 
@@ -311,7 +319,6 @@ var bus = new MessageBus(provider, dispatcher, options);
 
 // 4. 发送消息
 bus.sendAsync(new CreateOrderCommand("P123", 5))
-    .toCompletableFuture()
     .join();
 ```
 
