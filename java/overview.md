@@ -76,101 +76,53 @@ graph TD
 
 ## 分层架构
 
-```text
-┌────────────────────────────────────────────────────────────────────────────┐
-│                          Euonia Java Framework                             │
-├────────────────────────────────────────────────────────────────────────────┤
-│                                                                            │
-│  ┌────────────────────────── 业务层 ────────────────────────────────────┐   │
-│  │                                                                     │   │
-│  │       OSBA                              DDD                         │   │
-│  │  ┌─────────────────────┐            ┌────────────────────┐          │   │
-│  │  │ BusinessObject      │            │ Entity<ID>         │          │   │
-│  │  │  ├ ObservableObject │            │ Aggregate<ID>      │          │   │
-│  │  │  │  ├ EditableObj   │            │ ValueObject<T>     │          │   │
-│  │  │  │  ├ ReadOnlyObj   │            │ DomainEvent        │          │   │
-│  │  │  │  └ ExecutableObj │            │ Command (+Unicast) │          │   │
-│  │  │ RuleSystem          │            │ ApplicationEvent   │          │   │
-│  │  │ PropertyInfo<T>     │            │ UseCase<I,O>       │          │   │
-│  │  │ ObjectFactory       │            │ @Audited           │          │   │
-│  │  │ FieldDataManager    │            └────────────────────┘          │   │
-│  │  └─────────────────────┘                                            │   │
-│  │                                                                     │   │
-│  │       UoW (跨切面)                                                   │   │
-│  │  ┌───────────────────┐                                              │   │
-│  │  │ UnitOfWorkManager │  ← ThreadLocal 环境作用域                      │   │
-│  │  │ UnitOfWork        │  ← AutoCloseable + completeAsync()           │   │
-│  │  │ @UnitOfWork       │  ← 声明式事务边界 (AOP)                         │   │
-│  │  │ IsolationLevels   │  ← READ_UNCOMMITTED → SERIALIZABLE           │   │
-│  │  └───────────────────┘                                              │   │
-│  └─────────────────────────────────────────────────────────────────────┘   │
-│                                                                            │
-│  ┌────────────────────────── 基础设施层 ─────────────────────────────────┐   │
-│  │                                                                     │   │
-│  │       Pipeline                           Core                       │   │
-│  │  ┌────────────────────┐            ┌───────────────────┐            │   │
-│  │  │ Pipeline<T,C>      │            │ ObjectId (5 种算法)│            │   │
-│  │  │ PipelineBase       │            │ SnowflakeId       │            │   │
-│  │  │ PipelineBehavior   │            │ GuidGenerator     │            │   │
-│  │  │ PipelineDelegate   │            │ ULID / ShortUID   │            │   │
-│  │  │ @PipelineBehaviors │            │ Tuple (Solo~Decet)│            │   │
-│  │  │ PipelineFactory    │            │ ObjectPool<T>     │            │   │
-│  │  └────────────────────┘            │ Singleton<T>      │            │   │
-│  │                                    │ @Validation       │            │   │
-│  │                                    │ ServiceProvider   │            │   │
-│  │                                    │ ClassScanner      │            │   │
-│  │                                    │ TypeHelper        │            │   │
-│  │                                    │ GenericType<T>    │            │   │
-│  │                                    │ HTTP Exceptions   │            │   │
-│  │                                    │ UserPrincipal     │            │   │
-│  │                                    └───────────────────┘            │   │
-│  └──────────────────────────────────────────────────────────────────────┘   │
-│                                                                             │
-│  ┌────────────────────────── 消息层 ─────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │    Bus-Core (编排引擎)              Bus-Abstract (契约层)              │   │
-│  │  ┌──────────────────────┐          ┌─────────────────────┐           │   │
-│  │  │ MessageBus           │          │ Transport           │           │   │
-│  │  │  ├ publishAsync      │          │ MessageConvention   │           │   │
-│  │  │  ├ sendAsync         │          │ TransportStrategy   │           │   │
-│  │  │  └ callAsync         │          │ MessageHeaders      │           │   │
-│  │  │ StrategicDispatcher  │          │ MessageMetadata     │           │   │
-│  │  │ DefaultHandlerContext│          │ MessageEnvelope     │           │   │
-│  │  │ MessageHandlerFinder │          │ HandlerRegistration │           │   │
-│  │  │ IdempotentHandler    │          │ @Subscribe          │           │   │
-│  │  │ PublishBuilder       │          │ @Channel            │           │   │
-│  │  │ SendBuilder          │          │ @Unicast/@Multicast │           │   │
-│  │  │ CallBuilder          │          │ @Request            │           │   │
-│  │  │ InboxPipelineBehavior│          │ RecipientRegistrar  │           │   │
-│  │  └──────────────────────┘          │ InboxStore          │           │   │
-│  │                                    │ OutboxStore         │           │   │
-│  │    传输适配器                        │ DeadLetterMessage   │           │   │
-│  │  ┌───────────┐ ┌───────────┐ ┌──────┴─────┐                          │   │
-│  │  │ InMemory  │ │ RabbitMQ  │ │  Kafka     │                          │   │
-│  │  │ StrongRef │ │ AMQP      │ │  Topic     │                          │   │
-│  │  │ WeakRef   │ │ Fanout    │ │  Partition │                          │   │
-│  │  │ DLQ       │ │ DLX       │ │  Consumer  │                          │   │
-│  │  └───────────┘ └───────────┘ └────────────┘                          │   │
-│  └──────────────────────────────────────────────────────────────────────┘   │
-│                                                                             │
-│  ┌────────────────────────── 集成层 ─────────────────────────────────────┐   │
-│  │                                                                      │   │
-│  │    Spring                                                            │   │
-│  │  ┌──────────────────────────────────────────────────────┐            │   │
-│  │  │ ApplicationContextServiceProvider                    │            │   │
-│  │  │ ServiceProviderConfiguration                         │            │   │
-│  │  │ MessageBusConfiguration                              │            │   │
-│  │  │ PipelineConfiguration (所有 Bean 为 prototype)        │            │   │
-│  │  │ OsbaConfiguration (ObjectFactory/BusinessObjFactory) │            │   │
-│  │  │ HttpContextAccessorConfiguration                     │            │   │
-│  │  │ UnitOfWorkAutoConfiguration + UnitOfWorkAspect       │            │   │
-│  │  │ BeanScope (singleton/prototype/request/session...)   │            │   │
-│  │  └──────────────────────────────────────────────────────┘            │   │
-│  └──────────────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+```mermaid
+graph RL
+    subgraph Integration["🔌 集成层"]
+        direction TB
+        Spring["Spring Boot 集成<br/>ApplicationContextServiceProvider<br/>MessageBusConfiguration<br/>PipelineConfiguration<br/>OsbaConfiguration<br/>UnitOfWorkAutoConfiguration<br/>HttpContextAccessorConfiguration<br/>BeanScope"]
+    end
 
----
+    subgraph Business["📦 业务层"]
+        direction LR
+        OSBA["OSBA<br/>BusinessObject<br/>ObservableObject<br/>EditableObject / ReadOnlyObject / ExecutableObject<br/>RuleSystem · PropertyInfo<br/>ObjectFactory · FieldDataManager"]
+        DDD["DDD<br/>Entity / Aggregate<br/>ValueObject / DomainEvent<br/>Command (+Unicast)<br/>ApplicationEvent<br/>UseCase / @Audited"]
+        UoW["UoW (跨切面)<br/>UnitOfWorkManager<br/>UnitOfWork<br/>@UnitOfWork<br/>IsolationLevels"]
+    end
+
+    subgraph Message["📨 消息层"]
+        direction LR
+        BusCore["Bus-Core (编排引擎)<br/>MessageBus: publishAsync / sendAsync / callAsync<br/>StrategicDispatcher<br/>MessageHandlerFinder<br/>IdempotentHandler<br/>PublishBuilder / SendBuilder / CallBuilder<br/>InboxPipelineBehavior"]
+        BusAbstract["Bus-Abstract (契约层)<br/>Transport<br/>MessageConvention<br/>TransportStrategy<br/>MessageHeaders / MessageMetadata<br/>MessageEnvelope<br/>HandlerRegistration<br/>@Subscribe / @Channel<br/>@Unicast / @Multicast<br/>@Request<br/>RecipientRegistrar<br/>InboxStore / OutboxStore<br/>DeadLetterMessage"]
+        Transport["传输适配器<br/>InMemory: StrongRef / WeakRef / DLQ<br/>RabbitMQ: AMQP / Fanout / DLX<br/>Kafka: Topic / Partition / Consumer"]
+    end
+
+    subgraph Infrastructure["⚙️ 基础设施层"]
+        direction LR
+        Pipeline["Pipeline<br/>Pipeline / PipelineBase<br/>PipelineBehavior<br/>PipelineDelegate<br/>@PipelineBehaviors<br/>PipelineFactory"]
+        Core["Core<br/>ObjectId (5 种算法)<br/>SnowflakeId · GuidGenerator<br/>ULID · ShortUID<br/>Tuple (Solo~Decet)<br/>ObjectPool / Singleton<br/>@Validation<br/>ServiceProvider<br/>ClassScanner / TypeHelper<br/>HTTP 异常体系<br/>反射工具 / DI 抽象"]
+    end
+
+    Integration --> Business
+    Business --> Message
+    Business --> Infrastructure
+    Message --> Infrastructure
+    Infrastructure --> Core
+
+    style Integration fill:#2ECC71,color:#fff,stroke:#27AE60
+    style Business fill:#E8833A,color:#fff,stroke:#D35400
+    style Message fill:#8E44AD,color:#fff,stroke:#7D3C98
+    style Infrastructure fill:#4A90D9,color:#fff,stroke:#357ABD
+    style Spring fill:#27AE60,color:#fff
+    style OSBA fill:#E67E22,color:#fff
+    style DDD fill:#F39C12,color:#fff
+    style UoW fill:#D35400,color:#fff
+    style BusCore fill:#9B59B6,color:#fff
+    style BusAbstract fill:#8E44AD,color:#fff
+    style Transport fill:#C0392B,color:#fff
+    style Pipeline fill:#3498DB,color:#fff
+    style Core fill:#2980B9,color:#fff
+```
 
 ## 模块依赖树
 
