@@ -4,7 +4,7 @@
 
 - **Maven 坐标**: `com.euonia:unit-of-work`
 - **依赖**: `com.euonia:core`
-- **API文档**：[点击查看](./apis)
+- **API文档**：[点击查看](./apis.md)
 
 ---
 
@@ -93,11 +93,16 @@ import com.euonia.uow.annotation.UnitOfWork;
 @Service
 public class OrderService {
 
-    @UnitOfWork(isTransactional = true, isolationLevel = READ_COMMITTED)
+    @UnitOfWork
     public Order createOrder(CreateOrderCommand cmd) {
         // 方法执行前自动 begin()
         // 方法执行后自动 completeAsync()
         // 异常时自动触发 onFailure()
+    }
+
+    @UnitOfWork(disabled = true)
+    public Order readOnlyQuery(Long id) {
+        // 禁用工作单元，即使类级别声明了 @UnitOfWork
     }
 }
 ```
