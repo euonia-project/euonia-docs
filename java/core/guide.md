@@ -40,9 +40,9 @@ com.euonia
 │  │ PriorityQueue│        │ @Validation          │          │
 │  │ Pair         │        │ Validator<A>         │          │
 │  │ ObjectPool   │        │ @Required            │          │
-│  └──────────────┘        │ @StringLength        │          │
-│                           │ @Range               │          │
-│                           │ @RegularExpression   │          │
+│  │ Range        │        │ @StringLength        │          │
+│  │ Argument*    │        │ @Range               │          │
+│  └──────────────┘        │ @RegularExpression   │          │
 │                           └──────────────────────┘          │
 │  com.euonia.security                                       │
 │  ┌───────────────────────────┐                             │
@@ -57,14 +57,14 @@ com.euonia
 │  com.euonia.http              com.euonia.reflection        │
 │  ┌──────────────────────┐    ┌──────────────────────┐     │
 │  │ HttpStatusException  │    │ ServiceProvider      │     │
-│  │ (400..504 子类 ×12)  │    │ SimpleServiceProvider│     │
-│  │ RequestContext       │    │ DelegateServiceProvider│   │
-│  │ RequestContextAccessor│   │ ClassScanner         │     │
-│  │ RequestContextAware  │    │ TypeHelper           │     │
-│  │   Executor           │    │ GenericType<T>       │     │
-│  │ RequestContextCopying│    │ @DisplayName         │     │
-│  │   Decorator          │    └──────────────────────┘     │
-│  │ @ResponseHttpStatusCode│                                │
+│  │ (400..504 子类 ×12)  │    │ ClassScanner         │     │
+│  │ RequestContext       │    │ TypeHelper           │     │
+│  │ RequestContextAccessor│   │ GenericType<T>       │     │
+│  │ RequestContextAware  │    │ Generic<C>           │     │
+│  │   Executor           │    │ @DisplayName         │     │
+│  │ RequestContextCopying│    │ AmbiguousMethodException│   │
+│  │   Decorator          │    │ MissingMethodException │    │
+│  │ @ResponseHttpStatusCode│  └──────────────────────┘     │
 │  └──────────────────────┘                                  │
 │                                                            │
 │  com.euonia.utility                                        │
@@ -72,6 +72,7 @@ com.euonia
 │  │ StringUtility    │                                      │
 │  │ ObjectUtility    │                                      │
 │  │ Assert           │                                      │
+│  │ Resource         │                                      │
 │  └──────────────────┘                                      │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -454,8 +455,14 @@ public interface ServiceProvider {
 
 | 实现 | 说明 |
 |------|------|
-| `SimpleServiceProvider` | 内存 Map 注册（`ConcurrentHashMap`），手动 `register(type, instance)` |
-| `DelegateServiceProvider` | 委托到外部 `Function<Class<?>, ?>` bean 工厂（与 Spring 集成） |
+| *(由上层模块提供)* | `ServiceProvider` 是 DI 抽象接口，具体实现由 `euonia-spring` 等上层模块提供 |
+
+### AmbiguousMethodException / MissingMethodException
+
+DI 方法解析过程中的异常类型：
+
+- `AmbiguousMethodException` — 当多个方法匹配工厂方法条件时抛出
+- `MissingMethodException` — 当找不到具有指定名称或注解的方法时抛出，携带 `typeName` 和 `methodName` 信息
 
 ### ClassScanner — 类路径扫描
 
@@ -527,6 +534,37 @@ K key = p.key();     // "score"
 V value = p.value(); // 100
 ```
 
+### 参数守卫
+
+`ArgumentNullException` 和 `ArgumentOutOfRangeException` 提供静态守卫方法，用于防御性编程中的前置条件检查：
+
+```java
+// 空值检查
+ArgumentNullException.throwIfNull(user, "user");
+ArgumentNullException.throwIfNullOrEmpty(name, "name");
+ArgumentNullException.throwIfNullOrEmpty(list, "list");
+
+// 范围检查
+ArgumentOutOfRangeException.throwIfGreaterThan(age, 150, "age");
+ArgumentOutOfRangeException.throwIfLessThan(age, 0, "age");
+ArgumentOutOfRangeException.throwIfNotInRange(score, 0, 100, "score");
+ArgumentOutOfRangeException.throwIfNegative(price, "price");
+ArgumentOutOfRangeException.throwIfZero(count, "count");
+```
+
+支持 `Supplier<String>` 形式的延迟消息生成，以及 `Range<T>` 对象形式的区间检查。
+
+### Range — 泛型不可变范围
+
+```java
+Range<Integer> validRange = Range.of(0, 100);
+validRange.check(50);   // true
+validRange.check(-1);   // false
+
+// 配合 ArgumentOutOfRangeException 使用
+ArgumentOutOfRangeException.throwIfNotInRange(score, validRange, "score");
+```
+
 ### StringUtility — 字符串工具
 
 | 方法 | 说明 |
@@ -558,6 +596,16 @@ V value = p.value(); // 100
 | `notContains(List<T>, Predicate<T>, String)` | 断言列表不含匹配元素 |
 | `notContains(T[], Predicate<T>, String)` | 断言数组不含匹配元素 |
 
+### Resource — 国际化资源工具
+
+`Resource` 通过 `ResourceBundle` 实现 i18n 消息查找，使用 `StackWalker` 自动检测调用者类以定位 `ClassLoader`：
+
+```java
+String msg = Resource.getString("core", "ArgumentNullException.Message1", "userId");
+```
+
+Core 模块内置三语言资源文件（`core.properties`、`core_zh_HANS.properties`、`core_zh_HANT.properties`），覆盖中文简体、繁体及英文。
+
 ---
 
 ## 设计模式
@@ -571,10 +619,10 @@ V value = p.value(); // 100
 | **模板方法 (Template Method)** | `AccountException`/`CredentialException` 抽象基类 |
 | **元注解 (Meta-Annotation)** | `@Validation` 绑定注解到校验器 |
 | **类型令牌 (Type Token)** | `GenericType<T>` + `SyntheticParameterizedType` |
-| **委托 (Delegate)** | `DelegateServiceProvider`、`DelegateRequestContextAccessor` |
+| **委托 (Delegate)** | `DelegateRequestContextAccessor` |
 | **装饰器 (Decorator)** | `RequestContextCopyingDecorator` — 包装 Runnable 传播上下文 |
 | **对象池 (Object Pool)** | `DefaultObjectPool<T>` + `ObjectPoolPolicy<T>` |
-| **断言 (Assertion)** | `Assert` — 防御性编程前置条件检查 |
+| **断言 (Assertion)** | `Assert`、`ArgumentNullException`、`ArgumentOutOfRangeException` — 防御性编程前置条件检查 |
 
 ---
 
@@ -585,12 +633,12 @@ V value = p.value(); // 100
 | 包名 | 类数 | 说明 |
 |------|------|------|
 | `com.euonia.annotation` | 10 | 自定义验证注解及验证器实现 |
-| `com.euonia.core` | 16 | 核心工具类：对象池、ID 生成器、优先级队列等 |
+| `com.euonia.core` | 19 | 核心工具类：对象池、ID 生成器、优先级队列、参数守卫等 |
 | `com.euonia.http` | 20 | HTTP 异常模型与请求上下文抽象 |
-| `com.euonia.reflection` | 8 | 反射工具：类扫描、服务提供、泛型类型处理 |
+| `com.euonia.reflection` | 9 | 反射工具：类扫描、服务提供、泛型类型处理 |
 | `com.euonia.security` | 6 | 安全相关：认证异常、用户主体模型 |
 | `com.euonia.tuple` | 11 | 元组类型：Solo ~ Decet（1 到 10 元素） |
-| `com.euonia.utility` | 3 | 通用工具类：断言、对象反射、字符串操作 |
+| `com.euonia.utility` | 4 | 通用工具类：断言、对象反射、字符串操作、国际化资源 |
 
 > 完整的 API 类级文档见 [apis.md](./apis.md) 及各独立类文档。
 

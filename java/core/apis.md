@@ -54,8 +54,11 @@
 | [ObjectPool](./com.euonia.core.ObjectPool.md) | 接口 | 对象池接口定义 |
 | [ObjectPoolPolicy](./com.euonia.core.ObjectPoolPolicy.md) | 接口 | 对象池策略接口 |
 | [ObjectPoolProvider](./com.euonia.core.ObjectPoolProvider.md) | 接口 | 对象池提供者接口 |
+| [ArgumentNullException](./com.euonia.core.ArgumentNullException.md) | 异常类 | 参数空值守卫（throwIfNull / throwIfNullOrEmpty） |
+| [ArgumentOutOfRangeException](./com.euonia.core.ArgumentOutOfRangeException.md) | 异常类 | 参数范围守卫（throwIfGreaterThan / throwIfLessThan 等） |
 | [Pair](./com.euonia.core.Pair.md) | 记录类 | 键值对 |
 | [PriorityQueue](./com.euonia.core.PriorityQueue.md) | 类 | 泛型优先级队列 |
+| [Range](./com.euonia.core.Range.md) | 记录类 | 泛型不可变范围 |
 | [PriorityValueFinder](./com.euonia.core.PriorityValueFinder.md) | 工具类 | 优先级队列值查找器 |
 | [RandomId](./com.euonia.core.RandomId.md) | 工具类 | 随机 ID 生成器 |
 | [ShortUniqueId](./com.euonia.core.ShortUniqueId.md) | 类 | 短唯一 ID 编码/解码 |
@@ -103,6 +106,8 @@ HTTP 异常层次结构与请求上下文抽象。
 | [SyntheticParameterizedType](./com.euonia.reflection.SyntheticParameterizedType.md) | 类 | 合成参数化类型 |
 | [TypeHelper](./com.euonia.reflection.TypeHelper.md) | 工具类 | 类型转换助手 |
 | [DisplayName](./com.euonia.reflection.DisplayName.md) | 注解 | 显示名称注解 |
+| [AmbiguousMethodException](./com.euonia.reflection.AmbiguousMethodException.md) | 异常类 | 方法歧义异常 |
+| [MissingMethodException](./com.euonia.reflection.MissingMethodException.md) | 异常类 | 方法缺失异常 |
 
 ### com.euonia.security
 
@@ -143,6 +148,7 @@ HTTP 异常层次结构与请求上下文抽象。
 |----|------|------|
 | [Assert](./com.euonia.utility.Assert.md) | 工具类 | 断言工具 |
 | [ObjectUtility](./com.euonia.utility.ObjectUtility.md) | 抽象工具类 | 对象反射操作工具 |
+| [Resource](./com.euonia.utility.Resource.md) | 工具类 | 国际化资源文件读取 |
 | [StringUtility](./com.euonia.utility.StringUtility.md) | 工具类 | 字符串操作工具 |
 
 ## 依赖
