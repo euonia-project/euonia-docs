@@ -71,11 +71,11 @@ OSBA 围绕五个核心抽象构建：**业务对象层次结构**、**规则系
 | `Rules` | `class` | 实例级异步规则执行器，基于 `CompletableFuture` |
 | `LambdaRule` | `class` | 基于 Lambda 表达式的规则执行 |
 | `DataAnnotationRule` | `class` | 注解驱动的规则 — `@Required`、`@Validator` |
-| `BrokenRule` | `class` | 规则违规，包含 `property`、`severity`、`description` |
+| `BrokenRule` | `record` | 规则违规，包含 `property`、`severity`、`description` |
 | `BrokenRuleCollection` | `class` | 追踪错误、警告和信息级别的违规 |
 | `RuleContext` | `class` | 验证期间传递给规则的执行上下文 |
 | `RuleResult` | `class` | 规则执行结果 |
-| `RuleSeverity` | `enum` | 规则严重程度（Error、Warning、Information） |
+| `RuleSeverity` | `enum` | 规则严重程度（Error、Warning、Information、Success） |
 | `RuleCheckException` | `class` | 规则检查异常 |
 
 ### 工厂模式
@@ -147,7 +147,7 @@ OSBA 围绕五个核心抽象构建：**业务对象层次结构**、**规则系
 ### 第二步：定义业务对象
 
 ```java
-public class User extends EditableObjectBase<User, Long> {
+public class User extends EditableObject<User> {
 
     private final PropertyInfo<Long> id = registerProperty(Long.class, "id");
 
@@ -181,7 +181,6 @@ public class User extends EditableObjectBase<User, Long> {
         super.create();
         setName(name);
         setId(Objects.requireNonNull(ObjectId.snowflake().getValue(Long.class)));
-        raiseEvent(new UserCreatedEvent(getId(), name));
     }
 }
 ```
@@ -305,7 +304,7 @@ boolean valid = user.isValid();       // 是否通过所有规则验证
 boolean busy = user.isBusy();         // 是否有挂起的异步操作
 ```
 
-### @PipelineBehaviors 上下文类
+### 工厂生命周期方法
 
 工厂方法通过 `@FactoryCreate` 等注解标记，在运行时由 `ObjectReflector` 基于反射发现：
 
@@ -340,21 +339,21 @@ protected void delete() {
 ### 使用 ObjectFactory 快捷方法
 
 ```java
-ObjectFactory objectFactory = new ObjectFactory(factory);
+BusinessObjectFactory factory = new BusinessObjectFactory(serviceProvider);
 
 // 创建并保存
-User user = objectFactory.create(User.class, "张三");
-objectFactory.insert(user);
+User user = factory.create(User.class, "张三");
+factory.insert(user);
 
 // 获取
-User existing = objectFactory.fetch(User.class, 123L);
+User existing = factory.fetch(User.class, 123L);
 
 // 更新
 existing.setName("新名称");
-objectFactory.update(existing);
+factory.update(existing);
 
 // 删除
-objectFactory.delete(existing);
+factory.delete(existing);
 ```
 
 ---
@@ -408,9 +407,23 @@ objectFactory.delete(existing);
 
 获取所有未通过验证的规则。
 
-#### ruleCheckComplete()
+#### ruleCheckComplete(PropertyInfo<?> property)
 
-规则检查完成后的回调。
+按属性通知规则检查完成。
+
+- **Parameters**:
+  - `property` (`PropertyInfo<?>`): 完成规则检查的属性
+
+#### ruleCheckComplete(String propertyName)
+
+按属性名通知规则检查完成。
+
+- **Parameters**:
+  - `propertyName` (`String`): 完成规则检查的属性名
+
+#### allRulesComplete()
+
+通知所有规则检查完成。
 
 ---
 
