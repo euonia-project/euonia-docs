@@ -1,6 +1,6 @@
 # OutgoingLoggingBehavior
 
-> OutboundLoggingBehavior 是一个用于记录出站消息的行为类，实现了 PipelineBehavior 接口。
+> OutgoingLoggingBehavior 是一个用于记录出站消息的行为类，实现了 PipelineBehavior 接口。
 > 它在消息通过管道发送之前，记录消息的 ID、类型、传输方式和通道信息，以便进行调试和监控。
 
 - **Module**: `bus-core`
@@ -19,7 +19,7 @@
 
 ### OutgoingLoggingBehavior (constructor)
 
-> 创建一个新的 OutboundLoggingBehavior 实例。
+> 创建一个新的 OutgoingLoggingBehavior 实例。
 
 - **Parameters**:
   - `messageType` (`Class&lt;T&gt;`): 消息类型

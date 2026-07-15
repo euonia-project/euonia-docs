@@ -2,7 +2,8 @@
 > 发送/命令模式的选项类，继承自 `ExtendableOptions`，额外增加了 `correlationId` 属性。
 - **Type**: class
 - **Package**: `com.euonia.bus.options`
-- **Author**: (not specified)
+- **Extends**: `ExtendableOptions`
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Fields
 | Field | Type | Description |

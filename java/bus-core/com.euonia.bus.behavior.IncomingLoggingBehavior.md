@@ -7,6 +7,8 @@
 - **Type**: `final class`
 - **Package**: `com.euonia.bus.behavior`
 
+- **Author**: damon(zhaorong@outlook.com)
+
 ## Type Parameters
 
 | Parameter | Bound | Description |
@@ -22,7 +24,7 @@
 
 - **Parameters**:
   - `context` (`MessageEnvelope<T>`): 路由消息上下文
-  - `next` (`PipelineDelegat<MessageEnvelope<T>, >`): 管道委托
+  - `next` (`PipelineDelegate<MessageEnvelope<T>, R>`): 管道委托
 - **Returns**: `CompletionStage<R>` - 处理结果
 
 ## Usage

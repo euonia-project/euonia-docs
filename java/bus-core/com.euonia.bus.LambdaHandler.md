@@ -2,7 +2,7 @@
 > (package-private) 用于将 `BiFunction<T, MessageContext, R>` lambda 表达式包装为可通过反射调用的处理器实例。
 - **Type**: class
 - **Package**: `com.euonia.bus`
-- **Author**: (not specified)
+- **Author**: damon(zhaorong@outlook.com)
 
 ## Fields
 | Field | Type | Description |

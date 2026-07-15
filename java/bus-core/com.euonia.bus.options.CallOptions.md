@@ -2,6 +2,7 @@
 > 请求/响应模式的调用选项，继承自 `ExtendableOptions`，额外增加了 `correlationId` 属性。
 - **Type**: class
 - **Package**: `com.euonia.bus.options`
+- **Extends**: `ExtendableOptions`
 - **Author**: (not specified)
 
 ## Fields

@@ -4,7 +4,7 @@
 
 - **Maven 坐标**: `com.euonia:bus-core`
 - **依赖**: `com.euonia:core`, `com.euonia:pipeline`, `com.euonia:bus-abstract`
-- **API文档**：[点击查看](./apis)
+- **API文档**：[点击查看](./apis.md)
 
 ---
 

@@ -1,5 +1,5 @@
 # RoutedMessage
-> `RoutedMessage` 是表示带有路由信息的消息的不可变类。它实现了 `MessageEnvelope` 接口，为通过消息系统路由的消息提供公共属性和方法。
+> `RoutedMessage` 是表示带有路由信息的消息封装类。它实现了 `MessageEnvelope` 接口，为通过消息系统路由的消息提供公共属性和方法。
 - **Type**: class
 - **Package**: `com.euonia.bus`
 - **Author**: damon(zhaorong@outlook.com)
