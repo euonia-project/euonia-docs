@@ -3,7 +3,7 @@
 > 领域驱动设计（Domain-Driven Design）—— Euonia 框架的战术设计工具箱。提供 Entity、Aggregate、ValueObject、Command、DomainEvent、UseCase 和 ApplicationService 等核心 DDD 构建块，帮助开发者以领域模型为中心构建高内聚、低耦合的业务系统。
 
 - **Maven 坐标**: `com.euonia:domain-driven-design`
-- **依赖**: `com.euonia:core`, `com.euonia:pipeline`, `com.euonia:unit-of-work`, `com.euonia:bus-core`
+- **依赖**: `com.euonia:core`
 - **API文档**：[点击查看](./apis)
 
 ---
@@ -24,7 +24,7 @@
 │                                                                  │
 │  ┌────────── 命令系统 ─────────┐  ┌────── 应用层 ──────────┐    │
 │  │ Command ← CommandBase      │  │ ApplicationService     │    │
-│  │ (extends Unicast)          │  │ BaseApplicationService │    │
+│  │                            │  │ BaseApplicationService │    │
 │  └────────────────────────────┘  └────────────────────────┘     │
 │                                                                  │
 │  ┌────────── 用例层 ──────────────────────────────────────┐     │
@@ -97,7 +97,7 @@ public class Money extends ValueObject<Money> {
 
 ### 事件系统
 
-事件分为领域事件（`DomainEvent`）和应用事件（`ApplicationEvent`），均扩展自消息总线的 `Multicast`。
+事件分为领域事件（`DomainEvent`）和应用事件（`ApplicationEvent`），均扩展自 `Event` 接口。
 
 | 类 / 接口 | 描述 |
 |-----------|------|
@@ -116,10 +116,10 @@ public class Money extends ValueObject<Money> {
 
 | 类 | 描述 |
 |----|------|
-| `Command` | 命令接口 — 扩展 `Unicast`（消息总线单播契约） |
+| `Command` | 命令接口 — 命令对象的标记接口 |
 | `CommandBase` | 命令抽象基类 — 基于 `HashMap` 的属性容器 |
 
-命令通过消息总线的 `Unicast` 机制发送到指定的命令处理器，实现 CQRS 的命令侧。
+命令对象封装操作意图和数据，由命令处理器执行，实现 CQRS 的命令侧。
 
 ---
 
@@ -171,7 +171,7 @@ public class OrderService extends BaseApplicationService {
 ```
 
 - `ApplicationService` — 应用服务标记接口
-- `BaseApplicationService` — 内置 `ServiceProvider` 和 `Bus` 引用
+- `BaseApplicationService` — 内置 `ServiceProvider` 引用
 
 ---
 
@@ -192,7 +192,7 @@ public class OrderService extends BaseApplicationService {
 | **实体-值对象** | `Entity` vs `ValueObject` — 标识等价 vs 属性等价 |
 | **聚合模式** | `AggregateBase` 管理子实体一致性和领域事件 |
 | **事件溯源** | `HasDomainEvents` + `raiseEvent` / `applyEvent` |
-| **CQRS** | `Command` 通过 `Unicast` 总线分发 |
+| **CQRS** | `Command` 命令对象封装操作意图，由处理器执行 |
 | **端口-适配器** | `UseCaseSuccess` / `UseCaseFailure` 输出端口 |
 | **观察者** | `UseCasePresenter` 使用 `SubmissionPublisher` |
 | **模板方法** | `DomainEventBase.attach()` 自动设置来源信息 |
@@ -251,8 +251,8 @@ public class OrderApplicationService extends BaseApplicationService {
         var order = new Order(ObjectId.snowflake().getValue(Long.class));
         order.create(cmd.getCustomer(), cmd.getTotal());
         repo.save(order);
-        // 发布领域事件
-        order.getEvents().forEach(event -> bus.publishAsync(event));
+        // 领域事件可通过消息总线发布
+        // order.getEvents().forEach(event -> eventBus.publish(event));
     }
 }
 ```
@@ -272,9 +272,6 @@ public class OrderApplicationService extends BaseApplicationService {
 ## 依赖
 
 - `com.euonia:core` (compile)
-- `com.euonia:pipeline` (compile)
-- `com.euonia:unit-of-work` (compile)
-- `com.euonia:bus-core` (compile)
 
 ## 作者
 

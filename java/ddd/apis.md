@@ -6,7 +6,7 @@
 
 - **Maven 坐标**: `com.euonia:domain-driven-design`
 - **Java 模块名**: `com.euonia.domain`
-- **依赖**: `com.euonia:core`, `com.euonia:pipeline`, `com.euonia:unit-of-work`, `com.euonia:bus-core`
+- **依赖**: `com.euonia:core`
 
 ## 导出包
 
@@ -43,7 +43,7 @@
 
 | 类 | 类型 | 说明 |
 |----|------|------|
-| [Command](./com.euonia.domain.command.Command.md) | interface | 命令接口，扩展 Unicast |
+| [Command](./com.euonia.domain.command.Command.md) | interface | 命令标记接口 |
 | [CommandBase](./com.euonia.domain.command.CommandBase.md) | abstract class | 命令抽象基类，基于 HashMap 的属性容器 |
 
 ### com.euonia.domain.auditing
@@ -63,7 +63,7 @@
 | 类 | 类型 | 说明 |
 |----|------|------|
 | [ApplicationService](./com.euonia.application.ApplicationService.md) | interface | 应用服务标记接口 |
-| [BaseApplicationService](./com.euonia.application.BaseApplicationService.md) | abstract class | 应用服务基类，内置 ServiceProvider 和 Bus |
+| [BaseApplicationService](./com.euonia.application.BaseApplicationService.md) | abstract class | 应用服务基类，内置 ServiceProvider |
 
 ### com.euonia.usecase
 

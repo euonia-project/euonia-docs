@@ -383,10 +383,6 @@ public void execute() {
 
 > `abstract class` `implements Pipeline<C, R>` — Pipeline 接口的抽象实现，提供了构建和执行组件管道的基本功能。
 
-| 字段 | 类型 | 描述 |
-|------|------|------|
-| `components` | `List<Function<...>>` | 存储管道组件的列表 |
-
 #### getComponents() → List\<...\>
 
 获取管道中组件的只读列表。
@@ -495,23 +491,6 @@ public void execute() {
 获取下一个管道委托。如果行为类型实现了 `PipelineBehavior` 接口，则直接调用其异步处理方法；否则使用反射查找 `handle` / `handleAsync` 方法进行调用。
 
 - **Returns**: `PipelineDelegate<C, R>` — 包装了行为调用的管道委托
-
-#### resolveHandleMethod(Class\<?\> behaviorType) → Method
-
-在给定的行为类型中查找 handle 或 handleAsync 方法。若同时存在两个方法，选取参数个数较少的那个。
-
-- **Returns**: `Method` — 匹配的方法
-- **Throws**: `IllegalStateException` 如果未找到或找到多个匹配的方法
-
-#### invokeTyped(Method method, Object instance, C request) → CompletionStage\<R\>
-
-通过反射调用行为方法，自动解析除第一个参数（请求）之外的所有方法参数。如果方法返回值是 CompletionStage，则返回异步结果；否则返回已完成的空 CompletableFuture。
-
-> **选择标准**：
-> - 方法名为 `handle` 或 `handleAsync`
-> - 至少有一个参数（第一个参数为请求对象）
-> - 返回类型为 `CompletionStage`
-> - 如果同时存在两个方法，选取参数个数较少的那个
 
 ---
 
