@@ -207,7 +207,7 @@ public class OrderService extends BaseApplicationService {
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>domain-driven-design</artifactId>
-    <version>${revision}</version>
+    <version>${euonia.version}</version>
 </dependency>
 ```
 
@@ -265,7 +265,7 @@ public class OrderApplicationService extends BaseApplicationService {
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>domain-driven-design</artifactId>
-    <version>${revision}</version>
+    <version>${euonia.version}</version>
 </dependency>
 ```
 

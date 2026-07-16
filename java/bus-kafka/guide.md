@@ -100,7 +100,7 @@ transport.sendAsync(routedMessage)
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>bus-kafka</artifactId>
-    <version>${revision}</version>
+    <version>${euonia.version}</version>
 </dependency>
 ```
 

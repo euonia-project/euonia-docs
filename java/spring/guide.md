@@ -71,6 +71,18 @@ public class Application {
 
 ---
 
+## Maven
+
+```xml
+<dependency>
+    <groupId>com.euonia</groupId>
+    <artifactId>spring</artifactId>
+    <version>${euonia.version}</version>
+</dependency>
+```
+
+---
+
 ## 依赖
 
 - `com.euonia:core`, `com.euonia:osba`, `com.euonia:pipeline`

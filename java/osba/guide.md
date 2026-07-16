@@ -140,7 +140,7 @@ OSBA 围绕五个核心抽象构建：**业务对象层次结构**、**规则系
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>osba</artifactId>
-    <version>${revision}</version>
+    <version>${euonia.version}</version>
 </dependency>
 ```
 

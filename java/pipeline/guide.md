@@ -62,7 +62,7 @@
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>pipeline</artifactId>
-    <version>${revision}</version>
+    <version>${euonia.version}</version>
 </dependency>
 ```
 
@@ -296,7 +296,7 @@ public void execute() {
 
 ## API 参考
 
-### Pipeline\<C, R\>
+### `Pipeline<C, R>`
 
 > `interface` — 管道接口，定义了构建和执行组件管道的契约。组件可以按特定顺序或根据其类型添加，管道可以使用可选的累积函数来执行。
 
@@ -336,7 +336,7 @@ public void execute() {
   - `handler` (`BiFunction<C, PipelineDelegate<C,R>, CompletionStage<R>>`): 要添加的处理器
 - **Returns**: `Pipeline<C, R>`
 
-#### use(Class\<?\> type, Object... args)
+#### `use(Class<?> type, Object... args)`
 
 根据类型向管道添加组件，支持可选的构造函数参数。
 
@@ -345,7 +345,7 @@ public void execute() {
   - `args` (`Object...`): 组件构造函数的可选参数
 - **Returns**: `Pipeline<C, R>`
 
-#### useOf(Class\<?\> contextType, boolean useAheadOfOthers)
+#### `useOf(Class<?> contextType, boolean useAheadOfOthers)`
 
 根据上下文类型向管道添加组件。如果 `contextType` 标注了 `@PipelineBehaviors`，则自动添加关联的行为组件。
 
@@ -360,7 +360,7 @@ public void execute() {
 
 - **Returns**: `PipelineDelegate<C, R>` — 构建好的管道委托
 
-#### runAsync(C request)
+#### `runAsync(C request)`
 
 使用给定的请求异步运行管道。自动调用 `useOf` 发现请求类型的关联行为，然后构建并执行。
 
@@ -379,15 +379,15 @@ public void execute() {
 
 ---
 
-### PipelineBase\<C, R\>
+### `PipelineBase<C, R>`
 
 > `abstract class` `implements Pipeline<C, R>` — Pipeline 接口的抽象实现，提供了构建和执行组件管道的基本功能。
 
-#### getComponents() → List\<...\>
+#### `getComponents() → List<...>`
 
 获取管道中组件的只读列表。
 
-#### getNext(PipelineDelegate next, Class\<?\> type, Object... args)
+#### `getNext(PipelineDelegate next, Class<?> type, Object... args)`
 
 *abstract* — 获取下一个 PipelineDelegate 实例，基于指定的类型和构造函数参数创建组件实例。
 
@@ -401,11 +401,11 @@ public void execute() {
 
 ---
 
-### PipelineDelegate\<C, R\>
+### `PipelineDelegate<C, R>`
 
 > `@FunctionalInterface` — 函数式接口，表示管道中"下一个"处理节点。
 
-#### invoke(C context) → CompletionStage\<R\>
+#### `invoke(C context) → CompletionStage<R>`
 
 异步调用管道委托。
 
@@ -415,11 +415,11 @@ public void execute() {
 
 ---
 
-### PipelineBehavior\<C, R\>
+### `PipelineBehavior<C, R>`
 
 > `interface` — 定义了管道行为的接口，表示在管道中处理请求的单个中间件组件。
 
-#### handleAsync(C context, PipelineDelegate\<C, R\> next) → CompletionStage\<R\>
+#### `handleAsync(C context, PipelineDelegate<C, R> next) → CompletionStage<R>`
 
 异步处理请求。通过在返回前/后执行代码实现 AOP 风格拦截。
 
@@ -430,7 +430,7 @@ public void execute() {
 
 ---
 
-### @PipelineBehaviors
+### `@PipelineBehaviors`
 
 > `annotation` `@Retention(RUNTIME) @Target(TYPE)` — 用于标记一个类，指定与该类相关的管道行为组件。
 
@@ -444,7 +444,7 @@ public void execute() {
 
 > `interface` — 负责创建 Pipeline 实例的工厂接口，抽象创建逻辑。
 
-#### \<C, R\> create() → Pipeline\<C, R\>
+#### `<C, R> create() → Pipeline<C, R>`
 
 创建一个新的 Pipeline 实例。
 
@@ -463,13 +463,13 @@ public void execute() {
 - **Parameters**:
   - `provider` (`ServiceProvider`): 用于解析和实例化管道组件的 ServiceProvider
 
-#### \<C, R\> create() → Pipeline\<C, R\>
+#### `<C, R> create() → Pipeline<C, R>`
 
 创建一个新的 Pipeline 实例。返回一个基于 `DefaultPipelineProvider` 的新管道。
 
 ---
 
-### DefaultPipelineProvider\<C, R\>
+### `DefaultPipelineProvider<C, R>`
 
 > `class` `extends PipelineBase<C, R>` — Pipeline 的具体实现，使用反射来调用管道行为。同时支持同步和异步的 handle 方法，以及实现了 PipelineBehavior 接口的行为。
 

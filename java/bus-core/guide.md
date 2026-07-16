@@ -249,7 +249,7 @@ bus-abstract (契约层)
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>bus-core</artifactId>
-    <version>${revision}</version>
+    <version>${euonia.version}</version>
 </dependency>
 ```
 
@@ -347,7 +347,7 @@ bus.sendAsync(new CreateOrderCommand("P123", 5))
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>bus-core</artifactId>
-    <version>${revision}</version>
+    <version>${euonia.version}</version>
 </dependency>
 ```
 

@@ -651,7 +651,7 @@ Core 模块内置三语言资源文件（`core.properties`、`core_zh_HANS.prope
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>core</artifactId>
-    <version>${revision}</version>
+    <version>${euonia.version}</version>
 </dependency>
 ```
 
