@@ -62,7 +62,7 @@
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>pipeline</artifactId>
-    <version>1.0.0</version>
+    <version>${revision}</version>
 </dependency>
 ```
 

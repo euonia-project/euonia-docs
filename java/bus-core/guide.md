@@ -347,7 +347,7 @@ bus.sendAsync(new CreateOrderCommand("P123", 5))
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>bus-core</artifactId>
-    <version>${euonia.version}</version>
+    <version>${revision}</version>
 </dependency>
 ```
 

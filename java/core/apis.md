@@ -86,9 +86,7 @@ HTTP 异常层次结构与请求上下文抽象。
 | [ServiceUnavailableException](./com.euonia.http.ServiceUnavailableException.md) | 异常类 | 503 Service Unavailable |
 | [GatewayTimeoutException](./com.euonia.http.GatewayTimeoutException.md) | 异常类 | 504 Gateway Timeout |
 | [RequestContext](./com.euonia.http.RequestContext.md) | 类 | 请求上下文 |
-| [RequestContextAccessor](./com.euonia.http.RequestContextAccessor.md) | 接口 | 请求上下文访问器 |
-| [DefaultRequestContextAccessor](./com.euonia.http.DefaultRequestContextAccessor.md) | 类 | 默认请求上下文访问器 |
-| [DelegateRequestContextAccessor](./com.euonia.http.DelegateRequestContextAccessor.md) | 函数式接口 | 委托式请求上下文访问器 |
+| [RequestContextAccessor](./com.euonia.http.RequestContextAccessor.md) | final class | 请求上下文访问器（ThreadLocal 静态工具类） |
 | [RequestContextAwareExecutor](./com.euonia.http.RequestContextAwareExecutor.md) | 类 | 请求上下文感知执行器 |
 | [RequestContextCopyingDecorator](./com.euonia.http.RequestContextCopyingDecorator.md) | 类 | 请求上下文复制装饰器 |
 | [ResponseHttpStatusCode](./com.euonia.http.ResponseHttpStatusCode.md) | 注解 | HTTP 状态码注解 |

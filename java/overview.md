@@ -623,7 +623,7 @@ public void handle(CreateOrderCommand cmd, MessageContext ctx) {
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>core</artifactId>
-    <version>${euonia.version}</version>
+    <version>${revision}</version>
 </dependency>
 ```
 

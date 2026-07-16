@@ -1,44 +1,27 @@
 # RequestContextAccessor
 
-> 定义请求上下文访问器的接口。
+> 请求上下文访问器，基于 ThreadLocal 提供当前请求上下文的存取。私有构造函数，不可实例化。
 
 - **Module**: `core`
-- **Type**: `interface`
+- **Type**: `final class`
 - **Package**: `com.euonia.http`
 - **Author**: damon(zhaorong@outlook.com)
 
-## Methods
+## Static Methods
 
-### getContext
+### get
 
 > 获取当前请求上下文。
 
-- **Returns**: `RequestContext` - 当前请求上下文
+- **Returns**: `RequestContext` - 当前请求上下文，如果未设置则返回 null
 
-### setContext
+### set
 
 > 设置当前请求上下文。
 
 - **Parameters**:
   - `context` (`RequestContext`): 当前请求上下文
 
-### removeContext
-
-> 移除当前请求上下文。
-
-### get
-
-> 静态便捷方法：获取当前请求上下文。
-
-- **Returns**: `RequestContext` - 当前请求上下文
-
-### set
-
-> 静态便捷方法：设置当前请求上下文。
-
-- **Parameters**:
-  - `context` (`RequestContext`): 当前请求上下文
-
 ### remove
 
-> 静态便捷方法：移除当前请求上下文。
+> 移除当前请求上下文。

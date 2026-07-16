@@ -103,7 +103,7 @@ transport.sendAsync(routedMessage)
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>bus-rabbitmq</artifactId>
-    <version>${euonia.version}</version>
+    <version>${revision}</version>
 </dependency>
 ```
 

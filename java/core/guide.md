@@ -419,11 +419,13 @@ throw new ResourceNotFoundException("用户不存在: " + userId);
 
 ### RequestContextAccessor — 访问器
 
-| 类型 | 说明 |
+`final class`，基于 `ThreadLocal<RequestContext>` 的静态工具类，提供当前请求上下文的存取。
+
+| 方法 | 说明 |
 |------|------|
-| `RequestContextAccessor`（接口） | `getContext()` / `setContext()` / `removeContext()` |
-| `DefaultRequestContextAccessor` | `ThreadLocal<RequestContext>` 实现 |
-| `DelegateRequestContextAccessor`（`@FunctionalInterface`） | 委托访问器 |
+| `RequestContextAccessor.get()` | 获取当前请求上下文 |
+| `RequestContextAccessor.set(RequestContext)` | 设置当前请求上下文 |
+| `RequestContextAccessor.remove()` | 移除当前请求上下文 |
 
 ### 跨线程传播
 
@@ -613,13 +615,12 @@ Core 模块内置三语言资源文件（`core.properties`、`core_zh_HANS.prope
 | 模式 | 应用位置 |
 |------|---------|
 | **门面 (Facade)** | `ObjectId` — 统一五种 ID 生成策略 |
-| **单例 (Singleton)** | `Singleton`、`DefaultObjectPoolProvider`、`DefaultRequestContextAccessor` |
+| **单例 (Singleton)** | `Singleton`、`DefaultObjectPoolProvider` |
 | **策略 (Strategy)** | `ObjectPoolPolicy` 生命周期；`GuidType` 生成模式 |
 | **工厂方法 (Factory Method)** | 所有 Record 的 `of()`/`from()`/`empty()`；`SnowflakeId.getInstance()` |
 | **模板方法 (Template Method)** | `AccountException`/`CredentialException` 抽象基类 |
 | **元注解 (Meta-Annotation)** | `@Validation` 绑定注解到校验器 |
 | **类型令牌 (Type Token)** | `GenericType<T>` + `SyntheticParameterizedType` |
-| **委托 (Delegate)** | `DelegateRequestContextAccessor` |
 | **装饰器 (Decorator)** | `RequestContextCopyingDecorator` — 包装 Runnable 传播上下文 |
 | **对象池 (Object Pool)** | `DefaultObjectPool<T>` + `ObjectPoolPolicy<T>` |
 | **断言 (Assertion)** | `Assert`、`ArgumentNullException`、`ArgumentOutOfRangeException` — 防御性编程前置条件检查 |
@@ -634,7 +635,7 @@ Core 模块内置三语言资源文件（`core.properties`、`core_zh_HANS.prope
 |------|------|------|
 | `com.euonia.annotation` | 10 | 自定义验证注解及验证器实现 |
 | `com.euonia.core` | 19 | 核心工具类：对象池、ID 生成器、优先级队列、参数守卫等 |
-| `com.euonia.http` | 20 | HTTP 异常模型与请求上下文抽象 |
+| `com.euonia.http` | 18 | HTTP 异常模型与请求上下文抽象 |
 | `com.euonia.reflection` | 9 | 反射工具：类扫描、服务提供、泛型类型处理 |
 | `com.euonia.security` | 6 | 安全相关：认证异常、用户主体模型 |
 | `com.euonia.tuple` | 11 | 元组类型：Solo ~ Decet（1 到 10 元素） |
@@ -650,7 +651,7 @@ Core 模块内置三语言资源文件（`core.properties`、`core_zh_HANS.prope
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>core</artifactId>
-    <version>${euonia.version}</version>
+    <version>${revision}</version>
 </dependency>
 ```
 

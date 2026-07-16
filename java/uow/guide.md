@@ -139,7 +139,7 @@ try (UnitOfWork independent = manager.begin(options, true)) {
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>unit-of-work</artifactId>
-    <version>${euonia.version}</version>
+    <version>${revision}</version>
 </dependency>
 ```
 

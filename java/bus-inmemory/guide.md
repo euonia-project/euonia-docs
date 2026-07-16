@@ -125,7 +125,7 @@ transport.publishAsync(routedMessage)
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>bus-inmemory</artifactId>
-    <version>${euonia.version}</version>
+    <version>${revision}</version>
 </dependency>
 ```
 

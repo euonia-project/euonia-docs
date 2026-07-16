@@ -322,7 +322,7 @@ boolean isRequest = convention.isRequest("queries");     // true
 <dependency>
     <groupId>com.euonia</groupId>
     <artifactId>bus-abstract</artifactId>
-    <version>${euonia.version}</version>
+    <version>${revision}</version>
 </dependency>
 ```
 
